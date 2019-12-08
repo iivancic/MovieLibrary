@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MovieLibrary.Model;
 using MovieLibrary.Service;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace MovieLibrary.Controllers
@@ -15,13 +18,17 @@ namespace MovieLibrary.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAllAsync()
         {
             var results = await _service.QueryAll();
 
             return Ok(new
             {
-                Items = results
+                Items = results.Select(r => new
+                {
+                    r.GenreId,
+                    r.GenreName
+                }).OrderBy(r => r.GenreId).ToList()
             });
         }
 
@@ -32,10 +39,15 @@ namespace MovieLibrary.Controllers
             return "value";
         }
 
-        // POST: api/Genre
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> PostAsync([FromBody] Genre entity)
         {
+            var insertResult = await _service.InsertAsync(entity);
+
+            if (!insertResult)
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to insert entity.");
+
+            return Ok();
         }
 
         // PUT: api/Genre/5

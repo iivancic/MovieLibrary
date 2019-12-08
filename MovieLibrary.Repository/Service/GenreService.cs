@@ -18,5 +18,13 @@ namespace MovieLibrary.Service
         {
             return _context.Genres.ToListAsync();
         }
+
+        public async Task<bool> InsertAsync(Genre entity)
+        {
+            await _context.AddAsync(entity);
+            var affectedRows = await _context.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
     }
 }
