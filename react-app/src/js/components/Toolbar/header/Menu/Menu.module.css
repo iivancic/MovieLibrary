@@ -1,0 +1,50 @@
+
+.navbar__button{
+align-self: center;
+border: 5px solid#6baa75;
+cursor: pointer;
+border-radius: 5%;
+margin: 0.5rem;
+}
+
+.bar{
+width: 30px;
+height: 5px;
+margin: 0.5rem;
+background: #6baa75;
+transition:all 2s ease;
+border-radius: 5%;
+
+}
+
+.bar1{
+transform: rotate(-45deg) translate(-10px, 10px);
+}
+.bar2{
+opacity: 0;
+}
+.bar3{
+transform: rotate(45deg) translate(-8px,-9px);
+}
+
+
+@media (max-width: 750px) {
+    .navbar__button{
+        align-self: center;
+        border: 2px solid#6baa75;
+        cursor: pointer;
+        border-radius: 5%;
+        margin: 0.3rem;
+        }
+        
+        .bar{
+        width: 15px;
+        height: 5px;
+        margin: 0.5rem;
+        background: #6baa75;
+        transition:all 2s ease;
+        border-radius: 5%;
+        
+        }
+        
+}

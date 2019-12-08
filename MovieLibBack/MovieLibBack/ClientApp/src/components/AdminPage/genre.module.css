@@ -1,0 +1,32 @@
+﻿.Genre {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .Genre td {
+        text-align: center
+    }
+
+    .Genre td, th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        width: 50%;
+    }
+
+    .Genre tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .Genre tr:hover {
+        background-color: #ddd;
+    }
+
+    .Genre th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #4CAF50;
+        color: white;
+        width: 50%;
+    }

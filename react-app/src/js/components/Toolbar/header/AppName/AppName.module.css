@@ -1,0 +1,38 @@
+.AppName {
+  font-family: "Dancing Script", cursive;
+  font-size: 4.5rem;
+  max-height: 100%;
+  max-width: 100%;
+  font-weight: bold;
+  position: absolute;
+  right: 70px;
+  color: rgb(51, 51, 51);
+}
+
+@media (max-width: 750px) {
+  .AppName {
+    font-size: 3rem;
+    max-height: 100%;
+    max-width: 100%;
+    font-weight: bold;
+    position: absolute;
+    position: absolute;
+    right: 10px;
+
+
+  }
+
+  @media (max-width: 600px) {
+    .AppName {
+      font-size: 2rem;
+      max-height: 50%;
+      max-width: 50%;
+      font-weight: bold;
+      position: absolute;
+      right: 10px;
+      display: box
+  
+
+    }
+}
+}
