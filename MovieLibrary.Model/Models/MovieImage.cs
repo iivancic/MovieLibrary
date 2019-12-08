@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MovieLibBack.Models
+﻿namespace MovieLibrary.Model
 {
     public class MovieImage
     {
@@ -13,6 +8,6 @@ namespace MovieLibBack.Models
 
         public virtual Movie Movie { get; set; }
         public virtual FileInfo FileInfo { get; set; }
-        public virtual ImageClassification ImageClassification { get; set; }
+        public virtual ImageType ImageClassification { get; set; }
     }
 }

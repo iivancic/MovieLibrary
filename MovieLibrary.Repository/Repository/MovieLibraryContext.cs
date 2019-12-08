@@ -1,18 +1,16 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieLibrary.Model;
 
-namespace MovieLibBack.Models
+namespace MovieLibrary.Service
 {
     public partial class MovieLibraryContext : DbContext
     {
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Movie> Movie { get; set; }
-        public DbSet<MovieDescription> MovieDescription { get; set; }
         public DbSet<MovieGenre> MovieGenre { get; set; }
         public DbSet<FileData> FileData { get; set; }
         public DbSet<FileInfo> FileInfo { get; set; }
-        public DbSet<ImageClassification> ImageClassifications { get; set; }
+        public DbSet<ImageType> ImageType { get; set; }
         public DbSet<MovieImage> MovieImages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -36,7 +34,7 @@ namespace MovieLibBack.Models
             modelBuilder.Entity<FileInfo>()
             .HasKey(bc => new { bc.FileInfoId });
 
-            modelBuilder.Entity<ImageClassification>()
+            modelBuilder.Entity<ImageType>()
                 .HasKey(bc => new { bc.ImageTypeId });
 
             modelBuilder.Entity<MovieImage>()
@@ -82,17 +80,6 @@ namespace MovieLibBack.Models
                 entity.Property(e => e.MovieName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<MovieDescription>(entity =>
-            {
-                entity.Property(e => e.LongDescription).IsUnicode(false);
-
-                entity.Property(e => e.ShortDescription)
-                    .HasMaxLength(1000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Trivia).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

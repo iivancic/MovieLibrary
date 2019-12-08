@@ -1,4 +1,4 @@
-using MovieLibBack;
+using MovieLibrary.Service;
 using Xunit;
 
 namespace MovieLibrary.Test

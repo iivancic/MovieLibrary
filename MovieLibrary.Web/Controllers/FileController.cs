@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MovieLibBack.Models;
 using System.IO;
+using MovieLibrary.Service;
+using MovieLibrary.Model;
 
-namespace MovieLibBack.Controllers
+namespace MovieLibrary.Web
 {
     [Route("file")]
     public class FileController : Controller
@@ -52,7 +53,7 @@ namespace MovieLibBack.Controllers
             return Ok(sendResults.ToList());
         }
 
-        [HttpPost, Route("https://localhost:44392/myServer/admin/newGenre")]
+        /*[HttpPost, Route("")]
         public void newGenre([FromBody] string value)
         {
             using var context = new MovieLibraryContext();
@@ -66,5 +67,6 @@ namespace MovieLibBack.Controllers
             context.SaveChanges();
 
         }
+        */
     }
 }

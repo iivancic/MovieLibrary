@@ -1,13 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieLibrary.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using MovieLibBack.Models;
-using System.IO;
-using System.Drawing;
 
-namespace MovieLibBack
+namespace MovieLibrary.Service
 {
     public class MovieService
     {

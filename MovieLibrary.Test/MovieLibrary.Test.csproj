@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MovieLibrary.Model\MovieLibrary.Model.csproj" />
+    <ProjectReference Include="..\MovieLibrary.Repository\MovieLibrary.Service.csproj" />
     <ProjectReference Include="..\MovieLibrary.Web\MovieLibrary.Web.csproj" />
   </ItemGroup>
 
