@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -14,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MovieLibBack\MovieLibBack\MovieLibBack.csproj" />
+    <ProjectReference Include="..\MovieLibrary.Web\MovieLibrary.Web.csproj" />
   </ItemGroup>
 
 </Project>

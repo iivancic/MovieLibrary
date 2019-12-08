@@ -52,7 +52,7 @@ namespace MovieLibBack.Controllers
             return Ok(sendResults.ToList());
         }
 
-        [HttpPost, Route('https://localhost:44392/myServer/admin/newGenre')]
+        [HttpPost, Route("https://localhost:44392/myServer/admin/newGenre")]
         public void newGenre([FromBody] string value)
         {
             using var context = new MovieLibraryContext();

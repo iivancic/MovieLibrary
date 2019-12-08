@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>MovieLibrary</Name>
+    <Name>MovieLibrary.Db</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{45fc09ce-867a-404a-ad19-8a9797b8656e}</ProjectGuid>
@@ -60,19 +60,26 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\PostDeployment" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Movie.sql" />
     <Build Include="dbo\Tables\Genres.sql" />
     <Build Include="dbo\Tables\MovieGenre.sql" />
-    <Build Include="dbo\Tables\MovieDescription.sql" />
     <Build Include="dbo\Tables\FileData.sql" />
     <Build Include="dbo\Tables\FileInfo.sql" />
-    <Build Include="dbo\Tables\ImageDescription.sql" />
+    <Build Include="dbo\Tables\ImageType.sql" />
     <Build Include="dbo\Tables\MovieImage.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\PostDeployment\PostDeploymentRunner.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\PostDeployment\dbo.Genre_PostDeployment.sql" />
   </ItemGroup>
 </Project>

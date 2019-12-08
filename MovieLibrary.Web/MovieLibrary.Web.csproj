@@ -24,20 +24,9 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Compile Remove="Assets\**" />
     <Content Remove="$(SpaRoot)**" />
-    <Content Remove="Assets\**" />
-    <EmbeddedResource Remove="Assets\**" />
-    <EntityDeploy Remove="Assets\**" />
     <None Remove="$(SpaRoot)**" />
-    <None Remove="Assets\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\AdminPageControllers\" />
-    <Folder Include="NewFolder\" />
-    <Folder Include="Utility\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
