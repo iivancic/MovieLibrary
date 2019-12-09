@@ -32,11 +32,17 @@ namespace MovieLibrary.Controllers
             });
         }
 
+
         // GET: api/Genre/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{entityId}", Name = "Get")]
+        //[HttpGet, Route({entityId}]
+        public async Task<IActionResult> DeleteAsync(int entityId)
         {
-            return "value";
+            var deleteResult = await _service.DeleteAsync(entityId);
+            if (!deleteResult)
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to insert entity.");
+
+            return Ok();
         }
 
         [HttpPost]
@@ -49,6 +55,7 @@ namespace MovieLibrary.Controllers
 
             return Ok();
         }
+
 
         // PUT: api/Genre/5
         [HttpPut("{id}")]

@@ -1,32 +1,75 @@
 ﻿.Genre {
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.GenreTable {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
+    width: 50%;
+}
+.input {
+    width: 95%;
+    height: 100%;
+    text-align: center;
+    background-color: white;
+    border: none;
+}
+
+    .input:focus {
+        border: #637483 1px solid;
+        outline: none;
+    }
+
+.newRow, .newRowId {
+    background-color: white;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.newRow {
     width: 100%;
 }
 
-    .Genre td {
-        text-align: center
-    }
+.idColumn {
+    width: 15%;
+}
 
-    .Genre td, th {
-        border: 1px solid #ddd;
-        padding: 8px;
-        width: 50%;
-    }
+.Genre td {
+    text-align: center;
+    height: 15%;
+}
 
-    .Genre tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+.Genre td, th {
+    border: 1px solid #ddd;
+}
 
-    .Genre tr:hover {
-        background-color: #ddd;
-    }
+.Genre tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
 
-    .Genre th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: center;
-        background-color: #4CAF50;
-        color: white;
-        width: 50%;
+.Genre tr:hover {
+    background-color: #ddd;
+}
+
+.Genre th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #637483;
+    color: white;
+}
+
+.FaEdit, .FaTrashAlt, .FaPlusCircle {
+    float: right;
+    margin: 3px;
+    color: black;
+}
+
+    .FaEdit:hover, .FaTrashAlt:hover, .FaPlusCircle:hover {
+        cursor: pointer;
+        color: #606060
     }

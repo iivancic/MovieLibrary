@@ -1,6 +1,6 @@
 using System;
 
-namespace MovieLibBack
+namespace MovieLibrary
 {
     public class WeatherForecast
     {

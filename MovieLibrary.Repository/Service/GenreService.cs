@@ -26,5 +26,14 @@ namespace MovieLibrary.Service
 
             return affectedRows > 0;
         }
+
+        public async Task<bool> DeleteAsync(int entityId)
+        {
+            var genre = new Genre { GenreId = entityId };
+            _context.Remove(genre);
+            var affectedRows = await _context.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
     }
 }
