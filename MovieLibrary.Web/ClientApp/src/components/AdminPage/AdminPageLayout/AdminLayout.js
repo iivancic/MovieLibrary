@@ -6,7 +6,7 @@ import {
     Link
 } from "react-router-dom";
 import axios from '../../../axios-orders';
-import GenreTable from '../Genre/GenreTable';
+import GenreTable from '../AdminPageComponents/GenreTable/GenreTable';
 
 class AdminLayout extends Component {
     render() {

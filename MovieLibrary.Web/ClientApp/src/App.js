@@ -5,9 +5,12 @@ import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import ImageTesting from './components/ImageTesting'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 import './custom.css'
-import AdminLayout from './components/AdminPage/AdminLayout/AdminLayout';
+import AdminLayout from './components/AdminPage/AdminPageLayout/AdminLayout';
 
 export default class App extends Component {
     static displayName = App.name;

@@ -1,27 +1,34 @@
 ﻿import React, { Component } from 'react';
-import axios from '../../../axios-orders';
-import classes from './genre.module.css';
-import Modal from './Modal/Modal';
-
+import axios from '../../../../axios-orders';
+import classes from '../../AdminPageStyles/GenreTable.module.css';
+import GenreModal from './Modal';
 import { FaEdit, FaTrashAlt, FaPlusCircle } from "react-icons/fa";
+import GenreInputForm from './GenreInputForm';
 
 class GenreTable extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            genres: [],
+            newGenre: {
+                genreName: ''
+            },
+            modalVisibility: false,
+            willBeDeleted: null,
+            formVisibility: false
+        }
+    }
     /*
-    constructor() {
-        super();
-
-        this.handleInputChange = this.handleInputChange.bind(this);
-    }*/
-
     state = {
         genres: [],
         newGenre: {
-            genreName: null
+            genreName: ''
         },
         modalVisibility: false,
-        willBeDeleted: null
+        willBeDeleted: null,
+        formVisibility: false
     };
-
+    */
     componentDidMount() {
         this.getData();
     }
@@ -51,16 +58,12 @@ class GenreTable extends Component {
         this.hideModalHandler();
     }
 
-    editDataHandler = () => {
-
-    }
-
     showModalHandler = () => {
         this.setState({ modalVisibility: true })
     }
 
     hideModalHandler = () => {
-        this.setState({ modalVisibility: false, willBeDeleted: null })
+        this.setState({ modalVisibility: false, willBeDeleted: null, formVisibility:false })
     }
 
     postDataHandler = () => {
@@ -81,10 +84,11 @@ class GenreTable extends Component {
         }
     }
 
-    handleInputChange(event) {
+    handleInputChange = (event) => {
+        const gName = event.target.value;
         this.setState({
             newGenre: {
-                genreName: event.target.value
+                 genreName: gName
             }
         });
     }
@@ -98,7 +102,7 @@ class GenreTable extends Component {
                     <td >{genre.genreName}
                         <FaEdit className={classes.FaEdit} onClick={() => this.editDataHandler(genre.genreId)} />
                         <FaTrashAlt className={classes.FaTrashAlt} onClick={() => {
-                            this.showModalHandler(genre)
+                            this.showModalHandler()
                             this.setState({ willBeDeleted: genre.genreId })
                         }} />
                     </td>
@@ -107,8 +111,8 @@ class GenreTable extends Component {
         });
 
         const input = <td className={classes.newRow}>
-            <input value={this.state.newGenre.genreName} className={classes.input} type="text" onKeyDown={this.keyDownHandler} onChange={(event) => this.setState({ newGenre: { genreName: event.target.value } })} />
-            <FaPlusCircle className={classes.FaPlusCircle} onClick={() => this.postDataHandler} />
+            <input value={this.state.newGenre.genreName} className={classes.input} type="text" onKeyDown={this.keyDownHandler} onChange={this.handleInputChange} />
+            <FaPlusCircle className={classes.FaPlusCircle} onClick={() => this.setState({ formVisibility: true })} />
         </td>
 
         return (
@@ -126,10 +130,19 @@ class GenreTable extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <Modal
+                <GenreModal
                     modalVisibility={this.state.modalVisibility}
                     clickedCancel={this.hideModalHandler}
                     clickedContinue={() => this.deleteDataHandler(this.state.willBeDeleted)}
+                />
+
+                <GenreInputForm
+                    formVisibility={this.state.formVisibility}
+                    postDataHandler={this.postDataHandler}
+                    genreName={this.state.newGenre.genreName}
+                    clickedCancel={this.hideModalHandler}
+                    clickedSubmit={this.hideModalHandler}
+                    handleInputChange={this.handleInputChange}
                 />
             </div >
         )
