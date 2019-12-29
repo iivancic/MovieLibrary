@@ -1,13 +1,10 @@
 ﻿import React, { Component } from 'react';
-import image from '../Assets/Images/DieHard/DieHardPoster.jpg'
-import Base64 from 'js-base64';
-import axios from '../axios-orders';
 
 class ImageTest extends Component {
     state = {
         imageBase64: ''
     }
-
+    /*
     componentDidMount() {
         axios.get('file/test')
             .then(response => {
@@ -27,5 +24,6 @@ class ImageTest extends Component {
             </div>
         );
     };
+    */
 }
 export default (ImageTest);

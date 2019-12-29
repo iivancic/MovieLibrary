@@ -1,15 +1,16 @@
 ﻿.Genre {
     width: 100%;
     display: flex;
-    align-content: center;
-    justify-content: center;
+    justify-content: left;
 }
 
 .GenreTable {
+    margin-top: 4%;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 50%;
+    width: 80%;
 }
+
 .input {
     width: 95%;
     height: 100%;
@@ -45,22 +46,23 @@
 
 .Genre td, th {
     border: 1px solid #ddd;
+    margin: 2px;
 }
 
-.Genre tr:nth-child(even) {
-    background-color: #f2f2f2;
+.Genre tr:nth-child(odd) {
+    background-color: white;
 }
 
 .Genre tr:hover {
-    background-color: #ddd;
+    background-color: antiquewhite;
 }
 
 .Genre th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
-    background-color: #637483;
-    color: white;
+    background-color: white;
+    color: black;
 }
 
 .FaEdit, .FaTrashAlt, .FaPlusCircle {

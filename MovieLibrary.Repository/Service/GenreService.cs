@@ -18,6 +18,10 @@ namespace MovieLibrary.Service
         {
             return _context.Genres.ToListAsync();
         }
+        public async Task<Genre> GetAsync(int id)
+        {
+            return await _context.Genres.FindAsync(id);
+        }
 
         public async Task<bool> InsertAsync(Genre entity)
         {
@@ -31,6 +35,21 @@ namespace MovieLibrary.Service
         {
             var genre = new Genre { GenreId = entityId };
             _context.Remove(genre);
+            var affectedRows = await _context.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
+
+        
+        public async Task<bool> ChangeAsync(int entityId, string newGenreName)
+        {
+            var genredb = await GetAsync(entityId);
+            
+            if (genredb == null)
+                return false;
+
+            genredb.GenreName = newGenreName;
+
             var affectedRows = await _context.SaveChangesAsync();
 
             return affectedRows > 0;

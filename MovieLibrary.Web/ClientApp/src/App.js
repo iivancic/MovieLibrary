@@ -4,7 +4,6 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
-import ImageTesting from './components/ImageTesting'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -17,13 +16,16 @@ export default class App extends Component {
 
     render() {
         return (
-            <Layout>
-                <Route exact path='/' component={Home} />
-                <Route path='/counter' component={Counter} />
-                <Route path='/fetch-data' component={FetchData} />
-                <Route path='/myServer/admin/' component={AdminLayout} />
+            <div style={{height: "100%"}}>
+                <Layout>
+                    <Route exact path='/' component={Home} />
+                    <Route path='/counter' component={Counter} />
+                    <Route path='/fetch-data' component={FetchData} />
+                    <Route path='/myServer/admin/' component={AdminLayout} />
+                </Layout>
 
-            </Layout>
+                
+            </div>
         );
     }
 }

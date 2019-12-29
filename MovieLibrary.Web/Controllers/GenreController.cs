@@ -55,13 +55,18 @@ namespace MovieLibrary.Controllers
 
             return Ok();
         }
-
-
+        
         // PUT: api/Genre/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] Genre value)
         {
+            var changedResult = await _service.ChangeAsync(id, value.GenreName);
+            if (!changedResult)
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to insert entity.");
+
+            return Ok();
         }
+        
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
