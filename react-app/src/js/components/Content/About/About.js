@@ -11,20 +11,19 @@ import {
 const About = () => {
   let match = useRouteMatch()
   return (
-      <div>
-    <ul>
-      <li>
-        <Link to={`${match.url}/components`}>Components</Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/props-v-state`}>Props</Link>
-      </li>
-    </ul>
-    <Switch>
-            <Route path={`${match.url}/components`} >Is there something else</Route>
-          </Switch>
-
-        </div>
+    <div>
+      <ul>
+        <li>
+          <Link to={`${match.url}/components`}>Components</Link>
+        </li>
+        <li>
+          <Link to={`${match.url}/props-v-state`}>Props</Link>
+        </li>
+      </ul>
+      <Switch>
+        <Route path={`${match.url}/components`}>Is there something else</Route>
+      </Switch>
+    </div>
   )
 }
 

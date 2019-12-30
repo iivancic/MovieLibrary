@@ -6,6 +6,9 @@ import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from "react-icons/fa";
 import GenreInputForm from './Forms/GenreInputForm';
 import GenreEditForm from './Forms/GenreEditForm';
 import Select from 'react-select'
+import Pagination from "react-js-pagination";
+
+
 
 
 class GenreTable extends Component {
@@ -30,9 +33,23 @@ class GenreTable extends Component {
 
             formValidation: {
 
+            },
+
+            paginating: {
+                currentPage: 1,
+                itemsPerPage: 10
             }
         }
+        this.handleClick = this.handleClick.bind(this)
+
     }
+
+    handleClick(event) {
+        this.setState({
+            currentPage: Number(event.target.id)
+        });
+    }
+
 
     componentDidMount() {
         this.getData();
@@ -126,8 +143,9 @@ class GenreTable extends Component {
                 formVisibility: true,
                 editId: id
             }
-        })
+        });
     }
+
     render() {
 
         const genres = this.state.genres.map(genre => {
@@ -153,6 +171,36 @@ class GenreTable extends Component {
                 </tr>
             )
         });
+        // -----------------------------------------------------------------------------
+        const items = this.state.genres.map(genre => { return (genre.genreName) });
+        const currentPage = this.state.paginating.currentPage;
+        const itemsPerPage = this.state.paginating.itemsPerPage;
+
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItem = items.slice(indexOfFirstItem, indexOfLastItem);
+
+        const renderItems = currentItem.map((item, index) => {
+            return <li key={index}>{item}</li>
+        })
+
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(items.length / itemsPerPage); i++) {
+            pageNumbers.push(i);
+        }
+
+        const renderPageNumbers = pageNumbers.map(number => {
+            return (
+                <li
+                    key={number}
+                    id={number}
+                    onClick={this.handleClick}
+                >
+                    {number}
+                </li>
+            );
+        });
+        //------------------------------------------------------------------------------
 
         const input = <td className={classes.newRow}>
             <input value={this.state.newGenre.genreName} className={classes.input} type="text" onKeyDown={this.keyDownHandler} onChange={this.handleInputChange} />
@@ -160,7 +208,18 @@ class GenreTable extends Component {
         </td>
 
         return (
+
+
             <div className={classes.Genre}>
+
+                <ul>
+                    {renderItems}
+                </ul>
+                <ul id="page-numbers">
+                    {renderPageNumbers}
+                </ul>
+
+
                 <table className={classes.GenreTable}>
                     <tbody>
                         <tr>
@@ -169,63 +228,65 @@ class GenreTable extends Component {
                                     <div style={{ width: "40%", margin: "0.4rem" }}>
                                         Number of records per page:
                                     </div>
-                                <div style={{ width: "15%" }}>
-                                    <Select
-                                        clearable={false}
-                                        label="React Select"
-                                        placeholder="25"
-                                        options={[
-                                            { value: 25, label: '25' },
-                                            { value: 50, label: '50' },
-                                            { value: 100, label: '100' }
-                                        ]}
-                                    />
+                                    <div style={{ width: "15%" }}>
+                                        <Select
+                                            clearable={false}
+                                            label="React Select"
+                                            placeholder="25"
+                                            options={[
+                                                { value: 25, label: '25' },
+                                                { value: 50, label: '50' },
+                                                { value: 100, label: '100' }
+                                            ]}
+                                        />
+                                    </div>
                                 </div>
-                                </div>
-                                <div style={{ float: "right", margin: "0.4rem"  }}>
-                                <FaSearch /> Search:
+                                <div style={{ float: "right", margin: "0.4rem" }}>
+                                    <FaSearch /> Search:
                                 <input type="text" />
-                            </div>
+                                </div>
                             </td>
 
                         </tr>
 
-                    <tr>
-                        <th className={classes.idColumn}>Genre Id</th>
-                        <th>Genre Name</th>
-                    </tr>
-                    {genres}
-                    <tr>
-                        <td className={classes.newRowId}></td>
-                        {input}
-                    </tr>
+                        <tr>
+                            <th className={classes.idColumn}>Genre Id</th>
+                            <th>Genre Name</th>
+                        </tr>
+                        {genres}
+                        <tr>
+                            <td className={classes.newRowId}></td>
+                            {input}
+                        </tr>
                     </tbody>
                 </table>
 
-            <GenreModal
-                modalVisibility={this.state.modalVisibility}
-                clickedCancel={this.hideModalHandler}
-                clickedContinue={() => this.deleteDataHandler(this.state.willBeDeleted)}
-            />
+                <GenreModal
+                    modalVisibility={this.state.modalVisibility}
+                    clickedCancel={this.hideModalHandler}
+                    clickedContinue={() => this.deleteDataHandler(this.state.willBeDeleted)}
+                />
 
-            <GenreInputForm
-                formVisibility={this.state.formVisibility}
-                postDataHandler={this.postDataHandler}
-                genreName={this.state.newGenre.genreName}
-                clickedCancel={this.hideModalHandler}
-                clickedSubmit={this.hideModalHandler}
-                handleInputChange={this.handleInputChange}
-            />
+                <GenreInputForm
+                    formVisibility={this.state.formVisibility}
+                    postDataHandler={this.postDataHandler}
+                    genreName={this.state.newGenre.genreName}
+                    clickedCancel={this.hideModalHandler}
+                    clickedSubmit={this.hideModalHandler}
+                    handleInputChange={this.handleInputChange}
+                />
 
-            <GenreEditForm
-                formVisibility={this.state.editForm.formVisibility}
-                clickedCancel={this.hideModalHandler}
-                clickedSaveChanges={this.saveChangesHandler}
-                editName={this.state.editForm.editName}
-                handleInputChange={this.editChangeHandler}
-            />
+                <GenreEditForm
+                    formVisibility={this.state.editForm.formVisibility}
+                    clickedCancel={this.hideModalHandler}
+                    clickedSaveChanges={this.saveChangesHandler}
+                    editName={this.state.editForm.editName}
+                    handleInputChange={this.editChangeHandler}
+                />
+
 
             </div >
+
         )
     }
 }

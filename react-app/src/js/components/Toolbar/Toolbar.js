@@ -9,8 +9,7 @@ class Toolbar extends Component {
     return (
       <div>
         <Header/>
- 
-        
+
       </div>
     )
   }
