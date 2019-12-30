@@ -200,7 +200,7 @@ class GenreTable extends Component {
                 </li>
             );
         });
-        //------------------------------------------------------------------------------
+        //------------------
 
         const input = <td className={classes.newRow}>
             <input value={this.state.newGenre.genreName} className={classes.input} type="text" onKeyDown={this.keyDownHandler} onChange={this.handleInputChange} />
