@@ -2,10 +2,12 @@
     width: 100%;
     display: flex;
     justify-content: left;
+    height: 100%
 }
 
 .GenreTable {
     margin-top: 4%;
+    margin-bottom: 4%;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 80%;
@@ -70,8 +72,15 @@
     margin: 3px;
     color: black;
 }
+.FaSearch {
+    margin: 0px;
+    padding: 4px;
+    height: 100%;
+    width: auto;
+}
 
-    .FaEdit:hover, .FaTrashAlt:hover, .FaPlusCircle:hover {
+    .FaEdit:hover, .FaTrashAlt:hover, .FaPlusCircle:hover, .FaSearch:hover {
         cursor: pointer;
         color: #606060
     }
+

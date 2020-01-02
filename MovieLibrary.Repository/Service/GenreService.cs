@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieLibrary.Model;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MovieLibrary.Service
@@ -17,6 +18,39 @@ namespace MovieLibrary.Service
         public Task<List<Genre>> QueryAll()
         {
             return _context.Genres.ToListAsync();
+        }
+
+        public async Task<PageTableResult<Genre>> GetTableAsync(TableParameters tableParameters)
+        {
+            var query = _context.Genres.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(tableParameters.SearchTerm))
+            {
+                query = query.Where(x => x.GenreName.StartsWith(tableParameters.SearchTerm));
+            }
+
+            var totalRecords = await query.CountAsync();
+
+            switch (tableParameters.OrderBy)
+            {
+                case nameof(Genre.GenreId):
+                    query = tableParameters.OrderDirection ? query.OrderBy(x => x.GenreId) : query.OrderByDescending(x => x.GenreId);
+                    break;
+                case nameof(Genre.GenreName):
+                default:
+                    query = tableParameters.OrderDirection ? query.OrderBy(x => x.GenreName) : query.OrderByDescending(x => x.GenreName);
+                    break;
+            }
+
+            query = query.Skip(tableParameters.PageSize * (tableParameters.PageNumber - 1)).Take(tableParameters.PageSize);
+
+            var itemResults = await query.ToListAsync();
+
+            return new PageTableResult<Genre>
+            {
+                Items = itemResults,
+                TotalRecords = totalRecords
+            };
         }
         public async Task<Genre> GetAsync(int id)
         {
@@ -40,11 +74,11 @@ namespace MovieLibrary.Service
             return affectedRows > 0;
         }
 
-        
+
         public async Task<bool> ChangeAsync(int entityId, string newGenreName)
         {
             var genredb = await GetAsync(entityId);
-            
+
             if (genredb == null)
                 return false;
 

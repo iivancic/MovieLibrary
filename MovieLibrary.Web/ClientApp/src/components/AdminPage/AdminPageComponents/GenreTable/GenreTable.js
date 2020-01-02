@@ -1,4 +1,4 @@
-﻿import React, { Component } from 'react';
+﻿import React, { Component, useEffect } from 'react';
 import axios from '../../../../axios-orders';
 import classes from '../../AdminPageStyles/GenreTable.module.css';
 import GenreModal from './Modal';
@@ -7,8 +7,6 @@ import GenreInputForm from './Forms/GenreInputForm';
 import GenreEditForm from './Forms/GenreEditForm';
 import Select from 'react-select'
 import Pagination from "react-js-pagination";
-
-
 
 
 class GenreTable extends Component {
@@ -31,32 +29,23 @@ class GenreTable extends Component {
                 editId: null
             },
 
-            formValidation: {
-
-            },
-
-            paginating: {
-                currentPage: 1,
-                itemsPerPage: 10
+            tableParameters: {
+                pageNumber: 1,
+                pageSize: 25,
+                orderBy: '',
+                searchTerm: '',
+                orderDirection: true
             }
         }
-        this.handleClick = this.handleClick.bind(this)
-
+        this.selectPageSizeHandler = this.selectPageSizeHandler.bind(this)
     }
-
-    handleClick(event) {
-        this.setState({
-            currentPage: Number(event.target.id)
-        });
-    }
-
 
     componentDidMount() {
         this.getData();
     }
 
-    getData() {
-        axios.get('api/genre').then(
+    getData = () => {
+        axios.get('api/genre', { params: this.state.tableParameters }).then(
             response => {
                 this.setState({ genres: response.data.items });
             },
@@ -146,8 +135,30 @@ class GenreTable extends Component {
         });
     }
 
-    render() {
+    onChangeHandler = (event) => {
+        var searchTerm = event.target.value;
+        this.setState(prevState => ({
+            tableParameters: {
+                ...prevState.tableParameters,
+                searchTerm: searchTerm
+            }
+        }))
+    }
 
+    selectPageSizeHandler = (event) => {
+        var pageSizeTarget = event.target.value;
+        this.setState(prevState => ({
+            tableParameters: {
+                ...prevState.tableParameters,
+                pageSize: Number(pageSizeTarget)
+            }
+        }), () => {
+            this.getData();
+        });
+
+    }
+
+    render() {
         const genres = this.state.genres.map(genre => {
             return (
                 <tr key={genre.genreId}>
@@ -171,36 +182,7 @@ class GenreTable extends Component {
                 </tr>
             )
         });
-        // -----------------------------------------------------------------------------
-        const items = this.state.genres.map(genre => { return (genre.genreName) });
-        const currentPage = this.state.paginating.currentPage;
-        const itemsPerPage = this.state.paginating.itemsPerPage;
 
-        const indexOfLastItem = currentPage * itemsPerPage;
-        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-        const currentItem = items.slice(indexOfFirstItem, indexOfLastItem);
-
-        const renderItems = currentItem.map((item, index) => {
-            return <li key={index}>{item}</li>
-        })
-
-        const pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(items.length / itemsPerPage); i++) {
-            pageNumbers.push(i);
-        }
-
-        const renderPageNumbers = pageNumbers.map(number => {
-            return (
-                <li
-                    key={number}
-                    id={number}
-                    onClick={this.handleClick}
-                >
-                    {number}
-                </li>
-            );
-        });
-        //------------------
 
         const input = <td className={classes.newRow}>
             <input value={this.state.newGenre.genreName} className={classes.input} type="text" onKeyDown={this.keyDownHandler} onChange={this.handleInputChange} />
@@ -208,18 +190,7 @@ class GenreTable extends Component {
         </td>
 
         return (
-
-
             <div className={classes.Genre}>
-
-                <ul>
-                    {renderItems}
-                </ul>
-                <ul id="page-numbers">
-                    {renderPageNumbers}
-                </ul>
-
-
                 <table className={classes.GenreTable}>
                     <tbody>
                         <tr>
@@ -229,21 +200,28 @@ class GenreTable extends Component {
                                         Number of records per page:
                                     </div>
                                     <div style={{ width: "15%" }}>
-                                        <Select
+                                        <select
+                                            placeholder={this.state.tableParameters.pageSize}
+                                            value={this.state.tableParameters.pageSize}
                                             clearable={false}
+                                            onChange={this.selectPageSizeHandler}
                                             label="React Select"
-                                            placeholder="25"
-                                            options={[
-                                                { value: 25, label: '25' },
-                                                { value: 50, label: '50' },
-                                                { value: 100, label: '100' }
-                                            ]}
-                                        />
+                                        >
+                                            <option value={25}>25</option>
+                                            <option value={50}>50</option>
+                                            <option value={75}>75</option>
+                                            <option value={100}>100</option>
+
+                                        </select>
                                     </div>
                                 </div>
-                                <div style={{ float: "right", margin: "0.4rem" }}>
-                                    <FaSearch /> Search:
-                                <input type="text" />
+                                <div style={{ float: "right", margin: "0.4rem", alignContent: "center" }}>
+                                    <input value={this.state.tableParameters.searchTerm}
+                                        required
+                                        type="text"
+                                        placeholder="Search"
+                                        onChange={this.onChangeHandler} />
+                                    <FaSearch className={classes.FaSearch} onClick={this.getData} />
                                 </div>
                             </td>
 

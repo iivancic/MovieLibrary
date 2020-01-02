@@ -18,23 +18,15 @@ namespace MovieLibrary.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetTableAsync([FromQuery] TableParameters tableParameters)
         {
-            var results = await _service.QueryAll();
+            var result = await _service.GetTableAsync(tableParameters);
 
-            return Ok(new
-            {
-                Items = results.Select(r => new
-                {
-                    r.GenreId,
-                    r.GenreName
-                }).OrderBy(r => r.GenreId).ToList()
-            });
+            return Ok(result);
         }
 
-
         // GET: api/Genre/5
-        [HttpGet("{entityId}", Name = "Get")]
+        [HttpDelete("{entityId}", Name = "Get")]
         //[HttpGet, Route({entityId}]
         public async Task<IActionResult> DeleteAsync(int entityId)
         {
@@ -55,7 +47,7 @@ namespace MovieLibrary.Controllers
 
             return Ok();
         }
-        
+
         // PUT: api/Genre/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAsync(int id, [FromBody] Genre value)
@@ -65,13 +57,6 @@ namespace MovieLibrary.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to insert entity.");
 
             return Ok();
-        }
-        
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
