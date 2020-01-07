@@ -47,7 +47,7 @@ export default ({ postDataHandler, data, formVisibility, clickedCancel, handleIn
                             onChange={handleInputChange.bind(this, 'year')} />
 
                         <label>Short description:</label>
-                        <input
+                        <textarea
                             required
                             type="text"
                             className="form-control"
@@ -56,7 +56,7 @@ export default ({ postDataHandler, data, formVisibility, clickedCancel, handleIn
                             onChange={handleInputChange.bind(this, 'shortDescription')} />
 
                         <label>Long description:</label>
-                        <input
+                        <textarea
                             required
                             type="text"
                             className="form-control"
@@ -65,7 +65,7 @@ export default ({ postDataHandler, data, formVisibility, clickedCancel, handleIn
                             onChange={handleInputChange.bind(this, 'longDescription')} />
 
                         <label>Trivia:</label>
-                        <input
+                        <textarea
                             required
                             type="text"
                             className="form-control"

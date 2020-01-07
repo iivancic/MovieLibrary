@@ -248,7 +248,7 @@ class MovieTable extends Component {
                 <table className={classes.MovieTable}>
                     <tbody>
                         <tr>
-                            <td colSpan={5} style={{ width: "100%", verticalAlign: "middle" }} >
+                            <td colSpan={6} style={{ width: "100%", verticalAlign: "middle" }} >
                                 <div style={{ float: "left", display: "flex", width: "50%", margin: "1%", alignContent: "center" }}>
                                     Number of records per page:
                                         <select
@@ -285,15 +285,16 @@ class MovieTable extends Component {
                             <th>Length <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'MovieLength' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'MovieLength' })} /></th>
                             <th>Language <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'Language' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'Language' })} /></th>
                             <th>Year <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'Year' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'Year' })} /></th>
+                            <th/>
                         </tr>
                         {movies}
                         <tr>
-                            <td colSpan={5} style={{ width: "100%", verticalAlign: "middle" }} >
+                            <td colSpan={6} style={{ width: "100%", verticalAlign: "middle" }} >
                                 <FaPlusCircle className={classes.FaPlusCircle} onClick={() => this.setState({ inputFormVisibility: true })} />
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan={5} style={{ width: "100%", verticalAlign: "middle" }} >
+                            <td colSpan={6} style={{ width: "100%", verticalAlign: "middle" }} >
                                 <div style={{ float: "right", margin: "0.4rem", alignContent: "center" }}>
                                     <Pagination
                                         showPagination={this.state.paginationVisibility}
