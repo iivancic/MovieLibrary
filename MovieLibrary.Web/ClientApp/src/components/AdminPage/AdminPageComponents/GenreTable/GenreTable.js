@@ -221,7 +221,14 @@ class GenreTable extends Component {
             this.getData();
         }
             
-}
+    }
+
+    keyDownInputHandler = (event) => {
+        if (event.key === 'Enter') {
+            this.postDataHandler();
+        }
+    }
+
 
     render() {
         const genres = this.state.genres.map(genre => {
@@ -252,7 +259,6 @@ class GenreTable extends Component {
             <input value={this.state.newGenre.genreName} className={classes.input} type="text" onKeyDown={this.keyDownHandler} onChange={this.handleInputChange} />
             <FaPlusCircle className={classes.FaPlusCircle} onClick={() => this.setState({ formVisibility: true })} />
         </td>
-
         return (
             <div className={classes.Genre}>
 
@@ -323,6 +329,7 @@ class GenreTable extends Component {
                 />
 
                 <GenreInputForm
+                    KeyDown={this.keyDownInputHandler}
                     formVisibility={this.state.formVisibility}
                     postDataHandler={this.postDataHandler}
                     genreName={this.state.newGenre.genreName}

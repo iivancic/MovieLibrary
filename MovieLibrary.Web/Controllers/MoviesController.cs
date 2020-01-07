@@ -52,7 +52,6 @@ namespace MovieLibrary.Controllers
 
         // PUT: api/Movies/5
         [HttpPut("{id}")]
-        [HttpPut("{id}")]
         public async Task<IActionResult> PutAsync(int id, [FromBody] Movie value)
         {
             var changedResult = await _service.ChangeAsync(value);

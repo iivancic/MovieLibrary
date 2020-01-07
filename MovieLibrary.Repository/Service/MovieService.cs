@@ -92,17 +92,15 @@ namespace MovieLibrary.Service
 
             if (moviedb == null)
                 return false;
-            
-            moviedb = new Movie {
-                MovieName = newMovie.MovieName,
-                MovieLength = newMovie.MovieLength,
-                Language = newMovie.Language,
-                Year = newMovie.Year,
-                ShortDescription = newMovie.ShortDescription,
-                LongDescription = newMovie.LongDescription,
-                Trivia = newMovie.Trivia
-            };
 
+            moviedb.MovieName = newMovie.MovieName;
+            moviedb.MovieLength = newMovie.MovieLength;
+            moviedb.Language = newMovie.Language;
+            moviedb.Year = newMovie.Year;
+            moviedb.ShortDescription = newMovie.ShortDescription;
+            moviedb.LongDescription = newMovie.LongDescription;
+            moviedb.Trivia = newMovie.Trivia;
+            
             var affectedRows = await _context.SaveChangesAsync();
 
             return affectedRows > 0;

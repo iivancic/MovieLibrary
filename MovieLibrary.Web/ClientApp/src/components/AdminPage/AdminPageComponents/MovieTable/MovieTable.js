@@ -1,10 +1,12 @@
 ﻿import React, { Component } from 'react';
 import axios from '../../../../axios-orders';
 import classes from '../../AdminPageStyles/MovieTable.module.css';
-import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
-import { IoIosMore } from "react-icons/io"
-import Pagination from '../GenreTable/Pagination'
+import { IoIosMore } from 'react-icons/io';
+import Pagination from '../GenreTable/Pagination';
+import MovieInputForm from '../GenreTable/Forms/MovieInputForm';
+import Modal from '../GenreTable/Modal'
 
 class MovieTable extends Component {
     constructor(props) {
@@ -19,7 +21,31 @@ class MovieTable extends Component {
                 orderDirection: true
             },
             totalNumberOfRecords: null,
-            inputFormVisibility: false
+            inputFormVisibility: false,
+            newMovie: {
+                movieName: '',
+                movieLength: null,
+                language: '',
+                year: null,
+                shortDescription: '',
+                longDescription: '',
+                trivia: ''
+            },
+            editForm: {
+                formVisibility: false,
+                editMovie: {
+                    movieId: null,
+                    movieName: '',
+                    movieLength: null,
+                    language: '',
+                    year: null,
+                    shortDescription: '',
+                    longDescription: '',
+                    trivia: ''
+                }
+            },
+            willBeDeleted : null,
+            modalVisibility : false
         }
     }
 
@@ -40,6 +66,62 @@ class MovieTable extends Component {
         );
     }
 
+    postDataHandler = () => {
+        var componentRef = this;
+        const data = { newMovie: this.state.newMovie };
+        axios.post('api/Movies', data.newMovie).then(function (response) {
+            console.log(response);
+            componentRef.setState({ newMovie: null })
+            componentRef.getData();
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    putDataHandler = () => {
+        var componentRef = this;
+        const data = { editMovie: this.state.editForm.editMovie };
+
+        axios.put('api/Movies/' + data.editMovie.movieId, data.editMovie).then(function (response) {
+            console.log(response);
+            componentRef.setState({
+                editForm: {
+                    formVisibility: false,
+                    editMovie: {
+                        movieId: null,
+                        movieName: '',
+                        movieLength: null,
+                        language: '',
+                        year: null,
+                        shortDescription: '',
+                        longDescription: '',
+                        trivia: ''
+                    }
+                }
+            });
+            componentRef.getData();
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    deleteDataHandler = (entityId) => {
+        var componentRef = this;
+
+        axios.delete('api/Movies/' + entityId).then(function (response) {
+            console.log(response);
+            componentRef.getData();
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+        this.hideModalHandler();
+    }
+
+    hideModalHandler = () => {
+        this.setState({ inputFormVisibility: false });
+    }
+
     orderByPropAscending = (prop) => {
         this.setState(prevState => ({
             tableParameters: {
@@ -51,6 +133,7 @@ class MovieTable extends Component {
             this.getData();
         });
     }
+
     orderByPropDescending = (prop) => {
         this.setState(prevState => ({
             tableParameters: {
@@ -62,6 +145,16 @@ class MovieTable extends Component {
             this.getData();
         });
     }
+
+    hideEditModalHandler = () => {
+        this.setState(prevState => ({
+            editForm: {
+                ...prevState.editForm,
+                formVisibility: false
+            }
+        }))
+    }
+
     onChangeHandler = (event) => {
         var searchTerm = event.target.value;
         this.setState(prevState => ({
@@ -85,6 +178,7 @@ class MovieTable extends Component {
             this.getData();
         });
     }
+
     pageChangeHandler = (pageNumber) => {
         this.setState(prevState => ({
             tableParameters: {
@@ -94,6 +188,29 @@ class MovieTable extends Component {
         }), () => {
             this.getData();
         });
+    }
+
+    handleInputChange = (propertyName, event) => {
+        const movie = this.state.newMovie;
+        movie[propertyName] = event.target.value;
+        if (propertyName === 'year' || propertyName === 'movieLength') {
+            movie[propertyName] = parseInt(movie[propertyName])
+        }
+        this.setState({ newMovie: movie })
+    }
+
+    handleEditInputChange = (propertyName, event) => {
+        const movie = this.state.editForm.editMovie;
+        movie[propertyName] = event.target.value;
+        if (propertyName === 'year' || propertyName === 'movieLength') {
+            movie[propertyName] = parseInt(movie[propertyName])
+        }
+        this.setState(prevState => ({
+            editForm: {
+                ...prevState.editForm,
+                editMovie: movie
+            }
+        }))
     }
 
     keyDownHandlerSearch = (event) => {
@@ -110,6 +227,19 @@ class MovieTable extends Component {
                     <td>{movie.movieLength}</td>
                     <td>{movie.language}</td>
                     <td>{movie.year}</td>
+                    <td style={{ display: "flex" }}>
+                        <FaEdit className={classes.FaEdit} onClick={() =>
+                            this.setState({
+                                editForm: {
+                                    formVisibility: true,
+                                    editMovie: movie
+                                }
+                            })
+                        } />
+                        <FaTrashAlt className={classes.FaTrashAlt} onClick={() => {
+                            this.setState({ modalVisibility: true, willBeDeleted: movie.movieId})
+                        }} />
+                    </td>
                 </tr>
             )
         });
@@ -159,7 +289,7 @@ class MovieTable extends Component {
                         {movies}
                         <tr>
                             <td colSpan={5} style={{ width: "100%", verticalAlign: "middle" }} >
-                                <FaPlusCircle className={classes.FaPlusCircle} onClick={() => this.setState({ formVisibility: true })} />
+                                <FaPlusCircle className={classes.FaPlusCircle} onClick={() => this.setState({ inputFormVisibility: true })} />
                             </td>
                         </tr>
                         <tr>
@@ -178,13 +308,29 @@ class MovieTable extends Component {
                     </tbody>
                 </table>
 
-                <GenreInputForm
-                    formVisibility={this.state.formVisibility}
+                <MovieInputForm
+                    formVisibility={this.state.inputFormVisibility}
                     postDataHandler={this.postDataHandler}
-                    genreName={this.state.newGenre.genreName}
+                    data={this.state.movies}
                     clickedCancel={this.hideModalHandler}
-                    clickedSubmit={this.hideModalHandler}
                     handleInputChange={this.handleInputChange}
+                />
+
+                <MovieInputForm
+                    formVisibility={this.state.editForm.formVisibility}
+                    postDataHandler={this.putDataHandler}
+                    data={this.state.editForm.editMovie}
+                    clickedCancel={this.hideEditModalHandler}
+                    handleInputChange={this.handleEditInputChange}
+                />
+
+                <Modal
+                    modalVisibility={this.state.modalVisibility}
+                    clickedCancel={() => this.setState({ modalVisibility: false })}
+                    clickedContinue={() => {
+                        this.deleteDataHandler(this.state.willBeDeleted)
+                        this.setState({ modalVisibility: false })
+                    }}
                 />
             </div >
         )

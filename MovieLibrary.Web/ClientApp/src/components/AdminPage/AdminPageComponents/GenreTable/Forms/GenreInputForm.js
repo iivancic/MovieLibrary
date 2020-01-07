@@ -14,7 +14,7 @@ export default ({ postDataHandler, genreName, formVisibility, clickedCancel, han
                             required
                             type="text"
                             className="form-control"
-                            paceholder="Enter genre name"
+                            placeholder="Enter genre name"
                             value={genreName}
                             onChange={handleInputChange} />
                         <small className="form-text text-muted">Genre name must be unique.</small>

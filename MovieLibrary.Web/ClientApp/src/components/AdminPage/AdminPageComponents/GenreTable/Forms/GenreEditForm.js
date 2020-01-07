@@ -1,7 +1,7 @@
 ﻿import React from 'react'
 import {  Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
-export default ({ editName, formVisibility, clickedCancel, clickedSaveChanges, handleInputChange }) => {
+export default ({ KeyDown, editName, formVisibility, clickedCancel, clickedSaveChanges, handleInputChange }) => {
     return (
         <Modal isOpen={formVisibility}>
             <ModalHeader toggle={clickedCancel}>Change Genre Name</ModalHeader>
@@ -10,6 +10,7 @@ export default ({ editName, formVisibility, clickedCancel, clickedSaveChanges, h
                     <div>
                         <label >Input new Genre name</label>
                         <input
+                            onKeyDown={KeyDown}
                             required
                             defaultValue={editName}
                             type="text"
