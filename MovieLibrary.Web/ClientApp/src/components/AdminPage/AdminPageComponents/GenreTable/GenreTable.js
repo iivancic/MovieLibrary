@@ -1,20 +1,19 @@
-﻿import React, { Component, useEffect } from 'react';
+﻿import React, { Component } from 'react';
 import axios from '../../../../axios-orders';
 import classes from '../../AdminPageStyles/GenreTable.module.css';
 import GenreModal from './Modal';
 import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from "react-icons/fa";
 import GenreInputForm from './Forms/GenreInputForm';
 import GenreEditForm from './Forms/GenreEditForm';
-import Select from 'react-select'
-import Pagination from "react-js-pagination";
-
+import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
+import Pagination from './Pagination'
 
 class GenreTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
             genres: [],
-
+            totalNumberOfRecords: null,
             newGenre: {
                 genreName: ''
             },
@@ -35,7 +34,8 @@ class GenreTable extends Component {
                 orderBy: '',
                 searchTerm: '',
                 orderDirection: true
-            }
+            },
+            paginationVisibility: true
         }
         this.selectPageSizeHandler = this.selectPageSizeHandler.bind(this)
     }
@@ -48,6 +48,7 @@ class GenreTable extends Component {
         axios.get('api/genre', { params: this.state.tableParameters }).then(
             response => {
                 this.setState({ genres: response.data.items });
+                this.setState({ totalNumberOfRecords: response.data.totalRecords })
             },
             error => {
                 //When notification alerts are implemented(toast) trigger error toast.
@@ -59,7 +60,7 @@ class GenreTable extends Component {
     deleteDataHandler = (entityId) => {
         var componentRef = this;
 
-        axios.get('api/genre/' + entityId).then(function (response) {
+        axios.delete('api/genre/' + entityId).then(function (response) {
             console.log(response);
             componentRef.getData();
         }).catch(function (error) {
@@ -140,6 +141,7 @@ class GenreTable extends Component {
         this.setState(prevState => ({
             tableParameters: {
                 ...prevState.tableParameters,
+                pageNumber :1,
                 searchTerm: searchTerm
             }
         }))
@@ -150,13 +152,76 @@ class GenreTable extends Component {
         this.setState(prevState => ({
             tableParameters: {
                 ...prevState.tableParameters,
-                pageSize: Number(pageSizeTarget)
+                pageSize: Number(pageSizeTarget),
+                pageNumber: 1
             }
         }), () => {
             this.getData();
         });
-
     }
+
+
+    orderByIdDescending = () => {
+        this.setState(prevState => ({
+            tableParameters: {
+                ...prevState.tableParameters,
+                orderBy: 'GenreId',
+                orderDirection: false
+            }
+        }), () => {
+            this.getData();
+        });
+    }
+    orderByIdAscending = () => {
+        this.setState(prevState => ({
+            tableParameters: {
+                ...prevState.tableParameters,
+                orderBy: 'GenreId',
+                orderDirection: true
+            }
+        }), () => {
+            this.getData();
+        });
+    }
+    orderByNameDescending = () => {
+        this.setState(prevState => ({
+            tableParameters: {
+                ...prevState.tableParameters,
+                orderBy: 'GenreName',
+                orderDirection: false
+            }
+        }), () => {
+            this.getData();
+        });
+    }
+    orderByNameAscending = () => {
+        this.setState(prevState => ({
+            tableParameters: {
+                ...prevState.tableParameters,
+                orderBy: 'GenreName',
+                orderDirection: true
+            }
+        }), () => {
+            this.getData();
+        });
+    }
+    pageChangeHandler = (pageNumber) => {
+        this.setState(prevState => ({
+            tableParameters: {
+                ...prevState.tableParameters,
+                pageNumber: pageNumber
+            }
+        }), () => {
+            this.getData();
+        });
+    }
+
+    keyDownHandlerSearch = (event) => {
+        if (event.key === 'Enter') {
+            this.getData();
+        }
+            
+}
 
     render() {
         const genres = this.state.genres.map(genre => {
@@ -183,58 +248,70 @@ class GenreTable extends Component {
             )
         });
 
-
-        const input = <td className={classes.newRow}>
+        const input = <td className={classes.newRow} colSpan={2} style={{ width: "100%", verticalAlign: "middle" }} >
             <input value={this.state.newGenre.genreName} className={classes.input} type="text" onKeyDown={this.keyDownHandler} onChange={this.handleInputChange} />
             <FaPlusCircle className={classes.FaPlusCircle} onClick={() => this.setState({ formVisibility: true })} />
         </td>
 
         return (
             <div className={classes.Genre}>
+
                 <table className={classes.GenreTable}>
                     <tbody>
                         <tr>
                             <td colSpan={2} style={{ width: "100%", verticalAlign: "middle" }} >
-                                <div style={{ float: "left", display: "flex", width: "50%" }}>
-                                    <div style={{ width: "40%", margin: "0.4rem" }}>
-                                        Number of records per page:
-                                    </div>
-                                    <div style={{ width: "15%" }}>
+                                <div style={{ float: "left", display: "flex", width: "50%", margin: "1%", alignContent: "center" }}>
+                                    Number of records per page:
                                         <select
-                                            placeholder={this.state.tableParameters.pageSize}
-                                            value={this.state.tableParameters.pageSize}
-                                            clearable={false}
-                                            onChange={this.selectPageSizeHandler}
-                                            label="React Select"
-                                        >
-                                            <option value={25}>25</option>
-                                            <option value={50}>50</option>
-                                            <option value={75}>75</option>
-                                            <option value={100}>100</option>
+                                        style={{marginLeft: "1%"}}
+                                        placeholder={this.state.tableParameters.pageSize}
+                                        value={this.state.tableParameters.pageSize}
+                                        onChange={this.selectPageSizeHandler}
+                                        label="React Select"
+                                    >
+                                        <option value={25}>25</option>
+                                        <option value={50}>50</option>
+                                        <option value={75}>75</option>
+                                        <option value={100}>100</option>
 
-                                        </select>
-                                    </div>
+                                    </select>
                                 </div>
+
                                 <div style={{ float: "right", margin: "0.4rem", alignContent: "center" }}>
-                                    <input value={this.state.tableParameters.searchTerm}
+                                    <input
+                                        value={this.state.tableParameters.searchTerm}
                                         required
                                         type="text"
                                         placeholder="Search"
-                                        onChange={this.onChangeHandler} />
-                                    <FaSearch className={classes.FaSearch} onClick={this.getData} />
+                                        onChange={this.onChangeHandler}
+                                        onKeyDown={this.keyDownHandlerSearch}
+                                    />
+                                    <FaSearch  className={classes.FaSearch} onClick={this.getData} />
                                 </div>
                             </td>
 
                         </tr>
 
                         <tr>
-                            <th className={classes.idColumn}>Genre Id</th>
-                            <th>Genre Name</th>
+                            <th className={classes.idColumn}>Genre Id <TiArrowSortedDown onClick={this.orderByIdDescending} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp onClick={this.orderByIdAscending} className={classes.TiArrowSortedUp} /></th>
+                            <th>Genre Name <TiArrowSortedDown onClick={this.orderByNameDescending} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={this.orderByNameAscending} /></th>
                         </tr>
                         {genres}
                         <tr>
-                            <td className={classes.newRowId}></td>
                             {input}
+                        </tr>
+                        <tr>
+                            <td colSpan={2} style={{ width: "100%", verticalAlign: "middle" }} >
+                            <div style={{ float: "right", margin: "0.4rem", alignContent: "center" }}>
+                                    <Pagination
+                                        showPagination={this.state.paginationVisibility}
+                                        totalNumberOfItems={this.state.totalNumberOfRecords}
+                                        itemsPerPage={this.state.tableParameters.pageSize}
+                                        currentPage={this.state.tableParameters.pageNumber}
+                                        onClickHandler={this.pageChangeHandler}
+                                />
+                                </div>
+                                </td>
                         </tr>
                     </tbody>
                 </table>
@@ -261,8 +338,6 @@ class GenreTable extends Component {
                     editName={this.state.editForm.editName}
                     handleInputChange={this.editChangeHandler}
                 />
-
-
             </div >
 
         )

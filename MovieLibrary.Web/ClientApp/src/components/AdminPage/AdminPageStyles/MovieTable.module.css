@@ -1,0 +1,55 @@
+﻿.MovieTable {
+    margin-top: 4%;
+    margin-bottom: 4%;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+
+.MovieTable td {
+    text-align: center;
+    height: 15%;
+}
+
+    .MovieTable td, th {
+        border: 1px solid #ddd;
+        margin: 2px;
+    }
+
+    .MovieTable tr:nth-child(odd) {
+        background-color: white;
+    }
+
+    .MovieTable tr:hover {
+        background-color: #BDBBCB;
+    }
+
+    .MovieTable th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: white;
+        color: black;
+    }
+
+.FaEdit, .FaTrashAlt, .FaPlusCircle{
+    float: right;
+    margin: 3px;
+    color: black;
+}
+
+.More{
+    align-self:center;
+}
+.FaSearch {
+    margin: 0px;
+    padding: 4px;
+    height: 100%;
+    width: auto;
+}
+
+    .FaEdit:hover, .FaTrashAlt:hover, .FaPlusCircle:hover, .FaSearch:hover, .TiArrowSortedDown:hover, .TiArrowSortedUp:hover, .More:hover {
+        cursor: pointer;
+        color: #606060
+    }

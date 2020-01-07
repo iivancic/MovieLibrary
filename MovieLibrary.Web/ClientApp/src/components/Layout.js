@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
 import { NavMenu } from './NavMenu';
 
 export class Layout extends Component {
@@ -7,7 +6,7 @@ export class Layout extends Component {
 
   render () {
       return (
-          <div>
+          <div style={{ height: "100%"}}>
         <NavMenu />
 
           {this.props.children}

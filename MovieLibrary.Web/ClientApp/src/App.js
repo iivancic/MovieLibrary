@@ -23,8 +23,6 @@ export default class App extends Component {
                     <Route path='/fetch-data' component={FetchData} />
                     <Route path='/myServer/admin/' component={AdminLayout} />
                 </Layout>
-
-                
             </div>
         );
     }

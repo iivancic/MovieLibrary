@@ -1,38 +1,18 @@
 ﻿import React from 'react'
+import Pagination from "react-js-pagination"
+import classes from "../../AdminPageStyles/Pagination.module.css"
 
-export default ({ items, itemsPerPage, currentPage, onClickHandler }) => {
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItem = items.slice(indexOfFirstItem, indexOfLastItem);
 
-    const renderItems = currentItem.map((item, index) => {
-        return <li key={index}> {item} </li>;
-    });
-
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(items.lenth / itemsPerPage); i++) {
-        pageNumbers.push(i);
-    }
-    const renderPageNumbers = pageNumbers.map(number => {
-        return (
-            <li key={number}
-                id={number}
-                onClick={onClickHandler}
-            >
-                {number}
-            </li>
-        );
-    })
-
+export default ({ currentPage, totalNumberOfItems, itemsPerPage, onClickHandler }) => {
     return (
-        <div>
-            I am here!!
-            <ul>
-                {renderItems}
-            </ul>
-            <ul id="page-numbers">
-                {renderPageNumbers}
-            </ul>
+        <div className={classes.Pagination}>
+            <Pagination
+                activePage={currentPage}
+                itemsCountPerPage={itemsPerPage}
+                totalItemsCount={totalNumberOfItems}
+                pageRangeDisplayed={3}
+                onChange={onClickHandler}
+                />
         </div>
     )
 }

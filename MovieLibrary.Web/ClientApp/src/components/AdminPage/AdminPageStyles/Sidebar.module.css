@@ -62,5 +62,7 @@
 
 .SidebarInnerContainer:hover {
     cursor: pointer;
-    background-color: darkslategrey;
+    background-color: #454545;
+    width: 100%;
+    text-decoration:none;
 }

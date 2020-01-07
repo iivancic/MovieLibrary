@@ -56,7 +56,7 @@
 }
 
 .Genre tr:hover {
-    background-color: antiquewhite;
+    background-color: #BDBBCB;
 }
 
 .Genre th {
@@ -79,7 +79,7 @@
     width: auto;
 }
 
-    .FaEdit:hover, .FaTrashAlt:hover, .FaPlusCircle:hover, .FaSearch:hover {
+    .FaEdit:hover, .FaTrashAlt:hover, .FaPlusCircle:hover, .FaSearch:hover, .TiArrowSortedDown:hover,  .TiArrowSortedUp:hover {
         cursor: pointer;
         color: #606060
     }

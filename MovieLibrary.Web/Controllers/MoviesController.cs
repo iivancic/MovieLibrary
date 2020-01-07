@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 namespace MovieLibrary.Controllers
 {
     [Route("api/[controller]")]
-    public class GenreController : BaseController
+    public class MoviesController : BaseController
     {
-        private readonly GenreService _service;
+        private readonly MovieService _service;
 
-        public GenreController()
+        public MoviesController()
         {
-            _service = new GenreService();
+            _service = new MovieService();
         }
 
+        // GET: api/Movies
         [HttpGet]
         public async Task<IActionResult> GetTableAsync([FromQuery] TableParameters tableParameters)
         {
@@ -25,8 +26,8 @@ namespace MovieLibrary.Controllers
             return Ok(result);
         }
 
-        // GET: api/Genre/5
-        [HttpDelete("{entityId}", Name = "Get")]
+        // GET: api/Movies/5
+        [HttpDelete("{entityId}", Name = "GetMovies")]
         //[HttpGet, Route({entityId}]
         public async Task<IActionResult> DeleteAsync(int entityId)
         {
@@ -37,8 +38,9 @@ namespace MovieLibrary.Controllers
             return Ok();
         }
 
+        // POST: api/Movies
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] Genre entity)
+        public async Task<IActionResult> PostAsync([FromBody] Movie entity)
         {
             var insertResult = await _service.InsertAsync(entity);
 
@@ -48,15 +50,17 @@ namespace MovieLibrary.Controllers
             return Ok();
         }
 
-        // PUT: api/Genre/5
+        // PUT: api/Movies/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] Genre value)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAsync(int id, [FromBody] Movie value)
         {
-            var changedResult = await _service.ChangeAsync(id, value.GenreName);
+            var changedResult = await _service.ChangeAsync(value);
             if (!changedResult)
                 return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to insert entity.");
 
             return Ok();
         }
+
     }
 }
