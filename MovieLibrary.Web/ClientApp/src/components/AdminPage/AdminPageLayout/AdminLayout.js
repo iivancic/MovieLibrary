@@ -1,7 +1,8 @@
 ﻿import React, { Component } from 'react';
 import GenreTable from '../AdminPageComponents/GenreTable/GenreTable';
 import MovieTable from '../AdminPageComponents/MovieTable/MovieTable'
-import Sidebar from '../AdminPageComponents/GenreTable/Sidebar';
+import FileInfoTable from '../AdminPageComponents/FileInfoTable/FileInfoTable'
+import Sidebar from '../AdminPageComponents/Sidebar/Sidebar'
 import { Row, Col } from 'react-bootstrap';
 import { Route } from 'react-router';
 
@@ -18,6 +19,8 @@ class AdminLayout extends Component {
                     <Col sm={10}>
                         <Route path='/myServer/admin/GenreTable' component={GenreTable} />
                         <Route path='/myServer/admin/MovieTable' component={MovieTable} />
+                        <Route path='/myServer/admin/FileInfo' component={FileInfoTable} />
+
                     </Col>
                 </Row>
             </div>

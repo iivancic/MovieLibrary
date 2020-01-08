@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 namespace MovieLibrary.Controllers
 {
     [Route("api/[controller]")]
-    public class MoviesController : BaseController
+    public class FileInfoController : BaseController
     {
-        private readonly MovieService _service;
+        private readonly FileInfoService _service;
 
-        public MoviesController()
+        public FileInfoController()
         {
-            _service = new MovieService();
+            _service = new FileInfoService();
         }
 
-        // GET: api/Movies
+        // GET: api/FileInfo
         [HttpGet]
         public async Task<IActionResult> GetTableAsync([FromQuery] TableParameters tableParameters)
         {
@@ -26,7 +26,7 @@ namespace MovieLibrary.Controllers
         }
 
         // GET: api/Movies/5
-        [HttpDelete("{entityId}", Name = "GetMovies")]
+        [HttpDelete("{entityId}", Name = "GetFileInfo")]
         //[HttpGet, Route({entityId}]
         public async Task<IActionResult> DeleteAsync(int entityId)
         {
@@ -37,9 +37,9 @@ namespace MovieLibrary.Controllers
             return Ok();
         }
 
-        // POST: api/Movies
+        // POST: api/FileInfo
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] Movie entity)
+        public async Task<IActionResult> PostAsync([FromBody] FileInfo entity)
         {
             var insertResult = await _service.InsertAsync(entity);
 
@@ -49,9 +49,9 @@ namespace MovieLibrary.Controllers
             return Ok();
         }
 
-        // PUT: api/Movies/5
+        // PUT: api/FileInfo/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] Movie value)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] FileInfo value)
         {
             var changedResult = await _service.ChangeAsync(value);
             if (!changedResult)
@@ -59,6 +59,5 @@ namespace MovieLibrary.Controllers
 
             return Ok();
         }
-
     }
 }

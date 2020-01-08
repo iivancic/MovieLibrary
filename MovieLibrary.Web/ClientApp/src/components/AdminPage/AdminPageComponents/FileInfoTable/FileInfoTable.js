@@ -4,14 +4,14 @@ import classes from '../../AdminPageStyles/MovieTable.module.css';
 import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
 import Pagination from '../Pagination/Pagination'
-import MovieInputForm from '../Forms/MovieInputForm';
+import FileInfoInputForm from '../Forms/FileInfoInputForm';
 import Modal from '../Modals/Modal'
 
-class MovieTable extends Component {
+class FileInfoTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            movies: [],
+            fileInfo: [],
             tableParameters: {
                 pageNumber: 1,
                 pageSize: 25,
@@ -21,30 +21,23 @@ class MovieTable extends Component {
             },
             totalNumberOfRecords: null,
             inputFormVisibility: false,
-            newMovie: {
-                movieName: '',
-                movieLength: null,
-                language: '',
-                year: null,
-                shortDescription: '',
-                longDescription: '',
-                trivia: ''
+            newFileInfo: {
+                fileDataId: null,
+                fileName: '',
+                fileExtension: null,
+                size: '',
             },
             editForm: {
                 formVisibility: false,
-                editMovie: {
-                    movieId: null,
-                    movieName: '',
-                    movieLength: null,
-                    language: '',
-                    year: null,
-                    shortDescription: '',
-                    longDescription: '',
-                    trivia: ''
+                editFileInfo: {
+                    fileDataId: null,
+                    fileName: '',
+                    fileExtension: null,
+                    size: '',
                 }
             },
-            willBeDeleted : null,
-            modalVisibility : false
+            willBeDeleted: null,
+            modalVisibility: false
         }
     }
 
@@ -53,9 +46,9 @@ class MovieTable extends Component {
     }
 
     getData = () => {
-        axios.get('api/Movies', { params: this.state.tableParameters }).then(
+        axios.get('api/FileInfo', { params: this.state.tableParameters }).then(
             response => {
-                this.setState({ movies: response.data.items });
+                this.setState({ fileInfo: response.data.items });
                 this.setState({ totalNumberOfRecords: response.data.totalRecords })
             },
             error => {
@@ -67,10 +60,10 @@ class MovieTable extends Component {
 
     postDataHandler = () => {
         var componentRef = this;
-        const data = { newMovie: this.state.newMovie };
-        axios.post('api/Movies', data.newMovie).then(function (response) {
+        const data = { newFileInfo: this.state.newFileInfo };
+        axios.post('api/FileInfo', data.newFileInfo).then(function (response) {
             console.log(response);
-            componentRef.setState({ newMovie: null })
+            componentRef.setState({ newFileInfo: null })
             componentRef.getData();
         }).catch(function (error) {
             console.log(error);
@@ -79,22 +72,18 @@ class MovieTable extends Component {
 
     putDataHandler = () => {
         var componentRef = this;
-        const data = { editMovie: this.state.editForm.editMovie };
+        const data = { editFileInfo: this.state.editForm.editFileInfo };
 
-        axios.put('api/Movies/' + data.editMovie.movieId, data.editMovie).then(function (response) {
+        axios.put('api/FileInfo/' + data.editFileInfo.fileInfoId, data.editFileInfo).then(function (response) {
             console.log(response);
             componentRef.setState({
                 editForm: {
                     formVisibility: false,
-                    editMovie: {
-                        movieId: null,
-                        movieName: '',
-                        movieLength: null,
-                        language: '',
-                        year: null,
-                        shortDescription: '',
-                        longDescription: '',
-                        trivia: ''
+                    editFileInfo: {
+                        fileDataId: null,
+                        fileName: '',
+                        fileExtension: null,
+                        size: '',
                     }
                 }
             });
@@ -107,7 +96,7 @@ class MovieTable extends Component {
     deleteDataHandler = (entityId) => {
         var componentRef = this;
 
-        axios.delete('api/Movies/' + entityId).then(function (response) {
+        axios.delete('api/FileInfo/' + entityId).then(function (response) {
             console.log(response);
             componentRef.getData();
         }).catch(function (error) {
@@ -190,24 +179,24 @@ class MovieTable extends Component {
     }
 
     handleInputChange = (propertyName, event) => {
-        const movie = this.state.newMovie;
-        movie[propertyName] = event.target.value;
-        if (propertyName === 'year' || propertyName === 'movieLength') {
-            movie[propertyName] = parseInt(movie[propertyName])
+        const fileInfo = this.state.newFileInfo;
+        fileInfo[propertyName] = event.target.value;
+        if (propertyName === 'fileDataId' || propertyName === 'size') {
+            fileInfo[propertyName] = parseInt(fileInfo[propertyName])
         }
-        this.setState({ newMovie: movie })
+        this.setState({ newFileInfo: fileInfo })
     }
 
     handleEditInputChange = (propertyName, event) => {
-        const movie = this.state.editForm.editMovie;
-        movie[propertyName] = event.target.value;
-        if (propertyName === 'year' || propertyName === 'movieLength') {
-            movie[propertyName] = parseInt(movie[propertyName])
+        const fileInfo = this.state.editForm.editFileInfo;
+        fileInfo[propertyName] = event.target.value;
+        if (propertyName === 'fileDataId' || propertyName === 'size') {
+            fileInfo[propertyName] = parseInt(fileInfo[propertyName])
         }
         this.setState(prevState => ({
             editForm: {
                 ...prevState.editForm,
-                editMovie: movie
+                editFileInfo: fileInfo
             }
         }))
     }
@@ -218,25 +207,25 @@ class MovieTable extends Component {
         }
     }
     render() {
-        const movies = this.state.movies.map(movie => {
+        const fileInfo = this.state.fileInfo.map(fileInfo => {
             return (
-                <tr key={movie.movieId}>
-                    <td>{movie.movieId} </td>
-                    <td>{movie.movieName}</td>
-                    <td>{movie.movieLength}</td>
-                    <td>{movie.language}</td>
-                    <td>{movie.year}</td>
+                <tr key={fileInfo.fileInfoId}>
+                    <td>{fileInfo.fileInfoId}</td>
+                    <td>{fileInfo.fileDataID} </td>
+                    <td>{fileInfo.fileName}</td>
+                    <td>{fileInfo.fileExtension}</td>
+                    <td>{fileInfo.size}</td>
                     <td style={{ display: "flex" }}>
                         <FaEdit className={classes.FaEdit} onClick={() =>
                             this.setState({
                                 editForm: {
                                     formVisibility: true,
-                                    editMovie: movie
+                                    editFileInfo: fileInfo
                                 }
                             })
                         } />
                         <FaTrashAlt className={classes.FaTrashAlt} onClick={() => {
-                            this.setState({ modalVisibility: true, willBeDeleted: movie.movieId})
+                            this.setState({ modalVisibility: true, willBeDeleted: fileInfo.fileInfoId })
                         }} />
                     </td>
                 </tr>
@@ -279,14 +268,14 @@ class MovieTable extends Component {
                             </td>
                         </tr>
                         <tr>
-                            <th>Id <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'MovieId' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'MovieId' })} /></th>
-                            <th>Movie Name <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'MovieName' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'MovieName' })} /></th>
-                            <th>Length <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'MovieLength' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'MovieLength' })} /></th>
-                            <th>Language <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'Language' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'Language' })} /></th>
-                            <th>Year <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'Year' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'Year' })} /></th>
-                            <th/>
+                            <th>Id <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'FileInfoId' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'FileInfoId' })} /></th>
+                            <th>FileDataId <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'FileDataId' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'FileDataId' })} /></th>
+                            <th>FileName <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'FileName' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'FileName' })} /></th>
+                            <th>FileExtension <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'FileExtension' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'FileExtension' })} /></th>
+                            <th>Size <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'Size' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'Size' })} /></th>
+                            <th />
                         </tr>
-                        {movies}
+                        {fileInfo}
                         <tr>
                             <td colSpan={6} style={{ width: "100%", verticalAlign: "middle" }} >
                                 <FaPlusCircle className={classes.FaPlusCircle} onClick={() => this.setState({ inputFormVisibility: true })} />
@@ -308,18 +297,18 @@ class MovieTable extends Component {
                     </tbody>
                 </table>
 
-                <MovieInputForm
+                <FileInfoInputForm
                     formVisibility={this.state.inputFormVisibility}
                     postDataHandler={this.postDataHandler}
-                    data={this.state.movies}
+                    data={this.state.fileInfo}
                     clickedCancel={this.hideModalHandler}
                     handleInputChange={this.handleInputChange}
                 />
 
-                <MovieInputForm
+                <FileInfoInputForm
                     formVisibility={this.state.editForm.formVisibility}
                     postDataHandler={this.putDataHandler}
-                    data={this.state.editForm.editMovie}
+                    data={this.state.editForm.editFileInfo}
                     clickedCancel={this.hideEditModalHandler}
                     handleInputChange={this.handleEditInputChange}
                 />
@@ -337,4 +326,4 @@ class MovieTable extends Component {
     }
 }
 
-export default MovieTable;
+export default FileInfoTable;
