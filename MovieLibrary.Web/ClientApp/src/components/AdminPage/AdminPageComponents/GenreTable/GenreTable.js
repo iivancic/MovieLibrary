@@ -6,7 +6,7 @@ import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from "react-icons/fa";
 import GenreInputForm from '../Forms/GenreInputForm';
 import GenreEditForm from '../Forms/GenreEditForm';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
-import Pagination from './Pagination'
+import Pagination from '../Pagination/Pagination'
 
 class GenreTable extends Component {
     constructor(props) {
