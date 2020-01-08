@@ -3,10 +3,9 @@ import axios from '../../../../axios-orders';
 import classes from '../../AdminPageStyles/MovieTable.module.css';
 import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
-import { IoIosMore } from 'react-icons/io';
 import Pagination from '../GenreTable/Pagination';
-import MovieInputForm from '../GenreTable/Forms/MovieInputForm';
-import Modal from '../GenreTable/Modal'
+import MovieInputForm from '../Forms/MovieInputForm';
+import Modal from '../Modals/Modal'
 
 class MovieTable extends Component {
     constructor(props) {
