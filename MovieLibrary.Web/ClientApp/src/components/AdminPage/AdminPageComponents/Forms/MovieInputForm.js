@@ -1,8 +1,8 @@
 ﻿import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import MovieGenreLink from '../../AdminPageComponents/MovieGenreLink/MovieGenreLink'
 
-
-export default ({ postDataHandler, data, formVisibility, clickedCancel, handleInputChange }) => {
+export default ({ postDataHandler, data, formVisibility, clickedCancel, handleInputChange, genreListHandler }) => {
     return (
         <Modal isOpen={formVisibility} >
             <ModalHeader toggle={clickedCancel}>Add a new movie</ModalHeader>
@@ -72,7 +72,9 @@ export default ({ postDataHandler, data, formVisibility, clickedCancel, handleIn
                             placeholder="Enter movie trivia"
                             defaultValue={data.trivia}
                             onChange={handleInputChange.bind(this, 'trivia')} />
+                        <MovieGenreLink genreListHandler={genreListHandler} /> 
                     </div>
+
                 </form>
             </ModalBody>
             <ModalFooter>

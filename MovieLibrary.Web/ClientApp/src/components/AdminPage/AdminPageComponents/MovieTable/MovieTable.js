@@ -28,7 +28,8 @@ class MovieTable extends Component {
                 year: null,
                 shortDescription: '',
                 longDescription: '',
-                trivia: ''
+                trivia: '',
+                movieGenres: []
             },
             editForm: {
                 formVisibility: false,
@@ -40,11 +41,12 @@ class MovieTable extends Component {
                     year: null,
                     shortDescription: '',
                     longDescription: '',
-                    trivia: ''
+                    trivia: '',
+                    movieGenres: []
                 }
             },
-            willBeDeleted : null,
-            modalVisibility : false
+            willBeDeleted: null,
+            modalVisibility: false
         }
     }
 
@@ -94,7 +96,8 @@ class MovieTable extends Component {
                         year: null,
                         shortDescription: '',
                         longDescription: '',
-                        trivia: ''
+                        trivia: '',
+                        movieGenre: []
                     }
                 }
             });
@@ -190,7 +193,7 @@ class MovieTable extends Component {
     }
 
     handleInputChange = (propertyName, event) => {
-        const movie = this.state.newMovie;
+        const movie = this.state.newMovie; 
         movie[propertyName] = event.target.value;
         if (propertyName === 'year' || propertyName === 'movieLength') {
             movie[propertyName] = parseInt(movie[propertyName])
@@ -210,6 +213,7 @@ class MovieTable extends Component {
                 editMovie: movie
             }
         }))
+       
     }
 
     keyDownHandlerSearch = (event) => {
@@ -217,6 +221,35 @@ class MovieTable extends Component {
             this.getData();
         }
     }
+
+    findIndex(id, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (list[i].genreId === id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    genreListHandler = (id) => {
+        const data = this.state.newMovie.movieGenres;
+        const index = this.findIndex(id, data)
+        if (index > -1) {
+            data.splice(index, 1)
+        }
+        else {
+            data.push({ genreId: id })
+            this.setState(prevState => ({
+                newMovie: {
+                    ...prevState.newMovie,
+                    movieGenres: data
+                }
+            }))
+        }
+    }
+
+
     render() {
         const movies = this.state.movies.map(movie => {
             return (
@@ -236,7 +269,7 @@ class MovieTable extends Component {
                             })
                         } />
                         <FaTrashAlt className={classes.FaTrashAlt} onClick={() => {
-                            this.setState({ modalVisibility: true, willBeDeleted: movie.movieId})
+                            this.setState({ modalVisibility: true, willBeDeleted: movie.movieId })
                         }} />
                     </td>
                 </tr>
@@ -284,7 +317,7 @@ class MovieTable extends Component {
                             <th>Length <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'MovieLength' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'MovieLength' })} /></th>
                             <th>Language <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'Language' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'Language' })} /></th>
                             <th>Year <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'Year' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'Year' })} /></th>
-                            <th/>
+                            <th />
                         </tr>
                         {movies}
                         <tr>
@@ -314,6 +347,7 @@ class MovieTable extends Component {
                     data={this.state.movies}
                     clickedCancel={this.hideModalHandler}
                     handleInputChange={this.handleInputChange}
+                    genreListHandler={this.genreListHandler}
                 />
 
                 <MovieInputForm

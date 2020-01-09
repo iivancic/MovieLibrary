@@ -100,7 +100,7 @@ namespace MovieLibrary.Service
             moviedb.ShortDescription = newMovie.ShortDescription;
             moviedb.LongDescription = newMovie.LongDescription;
             moviedb.Trivia = newMovie.Trivia;
-            
+
             var affectedRows = await _context.SaveChangesAsync();
 
             return affectedRows > 0;
