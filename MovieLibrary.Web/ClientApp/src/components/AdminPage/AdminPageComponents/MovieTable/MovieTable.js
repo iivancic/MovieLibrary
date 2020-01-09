@@ -23,9 +23,9 @@ class MovieTable extends Component {
             inputFormVisibility: false,
             newMovie: {
                 movieName: '',
-                movieLength: null,
+                movieLength: '',
                 language: '',
-                year: null,
+                year: '',
                 shortDescription: '',
                 longDescription: '',
                 trivia: '',
@@ -72,7 +72,17 @@ class MovieTable extends Component {
         const data = { newMovie: this.state.newMovie };
         axios.post('api/Movies', data.newMovie).then(function (response) {
             console.log(response);
-            componentRef.setState({ newMovie: null })
+            componentRef.setState({
+                newMovie: {
+                    movieName: '',
+                    movieLength: null,
+                    language: '',
+                    year: null,
+                    shortDescription: '',
+                    longDescription: '',
+                    trivia: '',
+                    movieGenres: []
+                } })
             componentRef.getData();
         }).catch(function (error) {
             console.log(error);
@@ -344,7 +354,7 @@ class MovieTable extends Component {
                 <MovieInputForm
                     formVisibility={this.state.inputFormVisibility}
                     postDataHandler={this.postDataHandler}
-                    data={this.state.movies}
+                    data={this.state.newMovie}
                     clickedCancel={this.hideModalHandler}
                     handleInputChange={this.handleInputChange}
                     genreListHandler={this.genreListHandler}

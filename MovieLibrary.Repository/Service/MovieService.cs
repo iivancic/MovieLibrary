@@ -23,7 +23,7 @@ namespace MovieLibrary.Service
         public async Task<PageTableResult<Movie>> GetTableAsync(TableParameters tableParameters)
         {
             var query = _context.Movie.AsQueryable();
-
+             query.Include(x => x.MovieGenres);
             if (!string.IsNullOrWhiteSpace(tableParameters.SearchTerm))
             {
                 query = query.Where(x => x.Language.StartsWith(tableParameters.SearchTerm)
