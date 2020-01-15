@@ -1,12 +1,12 @@
 ﻿import React, { Component } from 'react';
-import axios from '../../../../axios-orders';
-import classes from '../../AdminPageStyles/GenreTable.module.css';
-import GenreModal from '../Modals/Modal';
+import axios from '../../../../../axios-orders';
+import classes from '../../../AdminPageStyles/GenreTable.module.css';
+import GenreModal from '../../Modals/Modal';
 import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from "react-icons/fa";
-import GenreInputForm from '../Forms/GenreInputForm';
-import GenreEditForm from '../Forms/GenreEditForm';
+import GenreInputForm from '../../Forms/GenreInputForm';
+import GenreEditForm from '../../Forms/GenreEditForm';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
-import Pagination from '../Pagination/Pagination'
+import Pagination from '../../Pagination/Pagination'
 
 class GenreTable extends Component {
     constructor(props) {

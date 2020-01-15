@@ -1,11 +1,13 @@
 ﻿import React, { Component } from 'react';
-import axios from '../../../../axios-orders';
-import classes from '../../AdminPageStyles/MovieTable.module.css';
+import axios from '../../../../../axios-orders';
+import classes from '../../../AdminPageStyles/MovieTable.module.css';
 import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
-import Pagination from '../Pagination/Pagination'
-import MovieInputForm from '../Forms/MovieInputForm';
-import Modal from '../Modals/Modal'
+import Pagination from '../../Pagination/Pagination'
+import MovieInputForm from '../../Forms/MovieInputForm';
+import Modal from '../../Modals/Modal'
+import { Navbar, NavItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 class MovieTable extends Component {
     constructor(props) {
@@ -34,8 +36,8 @@ class MovieTable extends Component {
             editForm: {
                 formVisibility: false,
                 editMovie: {
-                    movieId: null,
-                    movieName: '',
+                    movieId: 2894,
+                    movieName: 'aaaa',
                     movieLength: null,
                     language: '',
                     year: null,
@@ -48,6 +50,7 @@ class MovieTable extends Component {
             willBeDeleted: null,
             modalVisibility: false
         }
+        this.state.newMovie = () => this.newMovie.bind(this)
     }
 
     componentDidMount() {
@@ -82,7 +85,8 @@ class MovieTable extends Component {
                     longDescription: '',
                     trivia: '',
                     movieGenres: []
-                } })
+                }
+            })
             componentRef.getData();
         }).catch(function (error) {
             console.log(error);
@@ -92,7 +96,6 @@ class MovieTable extends Component {
     putDataHandler = () => {
         var componentRef = this;
         const data = { editMovie: this.state.editForm.editMovie };
-
         axios.put('api/Movies/' + data.editMovie.movieId, data.editMovie).then(function (response) {
             console.log(response);
             componentRef.setState({
@@ -107,7 +110,7 @@ class MovieTable extends Component {
                         shortDescription: '',
                         longDescription: '',
                         trivia: '',
-                        movieGenre: []
+                        movieGenres: [],
                     }
                 }
             });
@@ -203,7 +206,7 @@ class MovieTable extends Component {
     }
 
     handleInputChange = (propertyName, event) => {
-        const movie = this.state.newMovie; 
+        const movie = this.state.newMovie;
         movie[propertyName] = event.target.value;
         if (propertyName === 'year' || propertyName === 'movieLength') {
             movie[propertyName] = parseInt(movie[propertyName])
@@ -223,7 +226,7 @@ class MovieTable extends Component {
                 editMovie: movie
             }
         }))
-       
+
     }
 
     keyDownHandlerSearch = (event) => {
@@ -241,6 +244,21 @@ class MovieTable extends Component {
         }
         return -1;
     }
+
+    checkboxInitialStateHandler = (id) => {
+        const data = this.state.editForm.editMovie.movieGenres;
+        const index = this.findIndex(id, data)
+        if (index > -1) {
+            this.setState(prevState => ({
+                editForm: {
+                    ...prevState.editForm,
+                    checked: true
+                }
+            }
+            ))
+        }
+    }
+
 
     genreListHandler = (id) => {
         const data = this.state.newMovie.movieGenres;
@@ -270,14 +288,18 @@ class MovieTable extends Component {
                     <td>{movie.language}</td>
                     <td>{movie.year}</td>
                     <td style={{ display: "flex" }}>
-                        <FaEdit className={classes.FaEdit} onClick={() =>
-                            this.setState({
-                                editForm: {
-                                    formVisibility: true,
-                                    editMovie: movie
-                                }
-                            })
-                        } />
+                        <Navbar style={{ padding: "0" }}>
+                            <NavItem tag={Link} to={'/myServer/admin/MovieTableEdit/' + movie.movieId.toString()} className={classes.SidebarInnerContainer} >
+
+                                <FaEdit className={classes.FaEdit} onClick={() =>
+                                    this.setState({
+                                        editForm: {
+                                            editMovie: movie
+                                        }
+                                    })
+                                } />
+                            </NavItem>
+                        </Navbar>
                         <FaTrashAlt className={classes.FaTrashAlt} onClick={() => {
                             this.setState({ modalVisibility: true, willBeDeleted: movie.movieId })
                         }} />
@@ -332,7 +354,11 @@ class MovieTable extends Component {
                         {movies}
                         <tr>
                             <td colSpan={6} style={{ width: "100%", verticalAlign: "middle" }} >
-                                <FaPlusCircle className={classes.FaPlusCircle} onClick={() => this.setState({ inputFormVisibility: true })} />
+                                <Navbar style={{ padding: "0" }}>
+                                    <NavItem tag={Link} to={'/myServer/admin/MovieTableEdit/new'} className={classes.SidebarInnerContainer} >
+                                        <FaPlusCircle className={classes.FaPlusCircle}/>
+                                    </NavItem>
+                                </Navbar>
                             </td>
                         </tr>
                         <tr>
@@ -366,6 +392,8 @@ class MovieTable extends Component {
                     data={this.state.editForm.editMovie}
                     clickedCancel={this.hideEditModalHandler}
                     handleInputChange={this.handleEditInputChange}
+                    genreListHandler={this.genreListHandler}
+                    checked={this.state.editForm.checked}
                 />
 
                 <Modal

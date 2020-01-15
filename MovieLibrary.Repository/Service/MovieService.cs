@@ -18,12 +18,14 @@ namespace MovieLibrary.Service
         public Task<List<Movie>> QueryAll()
         {
             return _context.Movie.ToListAsync();
+
         }
 
-        public async Task<PageTableResult<Movie>> GetTableAsync(TableParameters tableParameters)
+        public async Task<PageTableResult<MovieModel>> GetTableAsync(TableParameters tableParameters)
         {
             var query = _context.Movie.AsQueryable();
-             query.Include(x => x.MovieGenres);
+            query = query.Include(x => x.MovieGenres);
+
             if (!string.IsNullOrWhiteSpace(tableParameters.SearchTerm))
             {
                 query = query.Where(x => x.Language.StartsWith(tableParameters.SearchTerm)
@@ -58,21 +60,30 @@ namespace MovieLibrary.Service
 
             var itemResults = await query.ToListAsync();
 
-            return new PageTableResult<Movie>
+            var mappedResults = itemResults.Select(item => new MovieModel(item)).ToList();
+
+            return new PageTableResult<MovieModel>
             {
-                Items = itemResults,
+                Items = mappedResults,
                 TotalRecords = totalRecords
             };
         }
-        public async Task<Movie> GetAsync(int id)
+        public async Task<MovieModel> GetAsync(int id)
         {
-            return await _context.Movie.FindAsync(id);
+            var movie = await _context.Movie
+                .Where(x => x.MovieId == id)
+                .Include(x => x.MovieGenres)
+                .Select(x => new MovieModel(x))
+                .FirstOrDefaultAsync();
+
+            return movie;
         }
 
-        public async Task<bool> InsertAsync(Movie entity)
+        public async Task<bool> InsertAsync(MovieModel entity)
         {
-            await _context.AddAsync(entity);
-            var affectedRows = await _context.SaveChangesAsync();
+            var movieDb = entity.ToEntity();
+            await _context.AddAsync(movieDb);
+            int affectedRows = await _context.SaveChangesAsync();
 
             return affectedRows > 0;
         }
@@ -86,9 +97,10 @@ namespace MovieLibrary.Service
             return affectedRows > 0;
         }
 
-        public async Task<bool> ChangeAsync(Movie newMovie)
+        public async Task<bool> ChangeAsync(MovieModel newMovie)
         {
-            var moviedb = await GetAsync(newMovie.MovieId);
+            var moviedb = await _context.Movie.Include(x => x.MovieGenres)
+                .FirstOrDefaultAsync(x => x.MovieId == newMovie.MovieId);
 
             if (moviedb == null)
                 return false;
@@ -100,6 +112,7 @@ namespace MovieLibrary.Service
             moviedb.ShortDescription = newMovie.ShortDescription;
             moviedb.LongDescription = newMovie.LongDescription;
             moviedb.Trivia = newMovie.Trivia;
+            moviedb.MovieGenres = newMovie.Genres.Select(x => new MovieGenre { GenreId = x }).ToList();
 
             var affectedRows = await _context.SaveChangesAsync();
 

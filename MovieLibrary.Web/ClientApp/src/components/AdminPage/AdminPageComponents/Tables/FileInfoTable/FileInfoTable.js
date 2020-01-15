@@ -1,11 +1,11 @@
 ﻿import React, { Component } from 'react';
-import axios from '../../../../axios-orders';
-import classes from '../../AdminPageStyles/MovieTable.module.css';
+import axios from '../../../../../axios-orders';
+import classes from '../../../AdminPageStyles/MovieTable.module.css';
 import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
-import Pagination from '../Pagination/Pagination'
-import FileInfoInputForm from '../Forms/FileInfoInputForm';
-import Modal from '../Modals/Modal'
+import Pagination from '../../Pagination/Pagination'
+import FileInfoInputForm from '../../Forms/FileInfoInputForm';
+import Modal from '../../Modals/Modal'
 
 class FileInfoTable extends Component {
     constructor(props) {

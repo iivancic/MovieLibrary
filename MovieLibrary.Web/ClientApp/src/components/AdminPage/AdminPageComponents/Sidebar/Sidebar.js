@@ -35,6 +35,7 @@ class Sidebar extends Component {
 
                     <NavItem tag={Link} to="/myServer/admin/FileInfo" className={classes.SidebarInnerContainer} ><FaTable className={classes.Icon} style={{ color: "white", alignSelf: "center" }} /><span style={{ margin: "0.7rem", color: "white" }} hidden={!this.state.collapsed}>File Info Table</span></NavItem>
 
+                    <NavItem tag={Link} to="/myServer/admin/FileDataTable" className={classes.SidebarInnerContainer} ><FaTable className={classes.Icon} style={{ color: "white", alignSelf: "center" }} /><span style={{ margin: "0.7rem", color: "white" }} hidden={!this.state.collapsed}>File Data Table</span></NavItem>
                 </Navbar>
             </div >
         )

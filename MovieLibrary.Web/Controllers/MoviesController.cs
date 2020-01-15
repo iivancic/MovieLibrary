@@ -25,6 +25,14 @@ namespace MovieLibrary.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{entityId}", Name = "GetMovieById")]
+        //[HttpGet, Route({entityId}]
+        public async Task<IActionResult> GetAsync(int entityId)
+        {
+            var result = await _service.GetAsync(entityId);
+            return Ok(result);
+        }
+
         // GET: api/Movies/5
         [HttpDelete("{entityId}", Name = "GetMovies")]
         //[HttpGet, Route({entityId}]
@@ -39,7 +47,7 @@ namespace MovieLibrary.Controllers
 
         // POST: api/Movies
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] Movie entity)
+        public async Task<IActionResult> PostAsync(MovieModel entity)
         {
             var insertResult = await _service.InsertAsync(entity);
 
@@ -51,7 +59,7 @@ namespace MovieLibrary.Controllers
 
         // PUT: api/Movies/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] Movie value)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] MovieModel value)
         {
             var changedResult = await _service.ChangeAsync(value);
             if (!changedResult)

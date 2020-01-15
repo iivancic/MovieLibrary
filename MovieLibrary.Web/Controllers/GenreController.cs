@@ -17,6 +17,13 @@ namespace MovieLibrary.Controllers
             _service = new GenreService();
         }
 
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var result = await _service.QueryAll();
+            return Ok(result);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetTableAsync([FromQuery] TableParameters tableParameters)
         {
@@ -33,7 +40,6 @@ namespace MovieLibrary.Controllers
             var deleteResult = await _service.DeleteAsync(entityId);
             if (!deleteResult)
                 return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to delete entity.");
-
             return Ok();
         }
 
