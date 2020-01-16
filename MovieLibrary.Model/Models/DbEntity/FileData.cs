@@ -6,6 +6,6 @@ namespace MovieLibrary.Model
     {
         public int FileDataId { get; set; }
         public byte[] Data { get; set; }
-        public virtual ICollection<FileInfo> FileInfo { get; set; }
+        public virtual FileInfo FileInfo { get; set; }
     }
 }

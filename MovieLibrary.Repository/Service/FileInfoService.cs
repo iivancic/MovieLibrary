@@ -20,14 +20,15 @@ namespace MovieLibrary.Service
             return _context.FileInfo.ToListAsync();
         }
 
-        public async Task<PageTableResult<FileInfo>> GetTableAsync(TableParameters tableParameters)
+        public async Task<PageTableResult<InfoData>> GetTableAsync(TableParameters tableParameters)
         {
             var query = _context.FileInfo.AsQueryable();
+            query = query.Include(x => x.FileData);
 
             if (!string.IsNullOrWhiteSpace(tableParameters.SearchTerm))
             {
                 query = query.Where(x => x.FileName.StartsWith(tableParameters.SearchTerm)
-                || x.FileExtension.StartsWith(tableParameters.SearchTerm)
+                || x.Extension.StartsWith(tableParameters.SearchTerm)
                 || x.FileInfoId.ToString().StartsWith(tableParameters.SearchTerm)
                 || x.Size.ToString().StartsWith(tableParameters.SearchTerm));
             }
@@ -42,8 +43,8 @@ namespace MovieLibrary.Service
                 case nameof(FileInfo.FileDataId):
                     query = tableParameters.OrderDirection ? query.OrderBy(x => x.FileDataId) : query.OrderByDescending(x => x.FileDataId);
                     break;
-                case nameof(FileInfo.FileExtension):
-                    query = tableParameters.OrderDirection ? query.OrderBy(x => x.FileExtension) : query.OrderByDescending(x => x.FileExtension);
+                case nameof(FileInfo.Extension):
+                    query = tableParameters.OrderDirection ? query.OrderBy(x => x.Extension) : query.OrderByDescending(x => x.Extension);
                     break;
                 case nameof(FileInfo.Size):
                     query = tableParameters.OrderDirection ? query.OrderBy(x => x.Size) : query.OrderByDescending(x => x.Size);
@@ -58,9 +59,18 @@ namespace MovieLibrary.Service
 
             var itemResults = await query.ToListAsync();
 
-            return new PageTableResult<FileInfo>
+            var mappedResults = itemResults.Select(item => new InfoData
             {
-                Items = itemResults,
+                FileInfoId = item.FileInfoId,
+                FileDataId = item.FileDataId,
+                Extension = item.Extension,
+                Size = item.Size,
+                FileName = item.FileName
+
+            }).ToList();
+            return new PageTableResult<InfoData>
+            {
+                Items = mappedResults,
                 TotalRecords = totalRecords
             };
         }
@@ -97,7 +107,7 @@ namespace MovieLibrary.Service
             fileInfodb.FileInfoId = newfileInfo.FileInfoId;
             fileInfodb.FileDataId = newfileInfo.FileDataId;
             fileInfodb.FileName = newfileInfo.FileName;
-            fileInfodb.FileExtension = newfileInfo.FileExtension;
+            fileInfodb.Extension = newfileInfo.Extension;
             fileInfodb.Size = newfileInfo.Size;
 
             var affectedRows = await _context.SaveChangesAsync();

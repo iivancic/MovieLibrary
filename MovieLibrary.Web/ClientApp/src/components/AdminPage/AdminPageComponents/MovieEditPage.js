@@ -2,6 +2,8 @@
 import axios from '../../../axios-orders';
 import MovieGenreLink from '../AdminPageComponents/Tables/MovieGenreLink/MovieGenreLink';
 import { Button } from 'reactstrap';
+import { Navbar, NavItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 class MovieEditPage extends Component {
 
@@ -17,7 +19,8 @@ class MovieEditPage extends Component {
                 shortDescription: '',
                 longDescription: '',
                 trivia: '',
-                genres: []
+                genres: [],
+                images: []
             }
         }
     }
@@ -235,9 +238,26 @@ class MovieEditPage extends Component {
                         defaultValue={data.trivia}
                         onChange={this.handleInputChange.bind(this, 'trivia')} />
                     <MovieGenreLink genreList={listGenres} genreListHandler={this.genreListHandler} />
+                    <div style={{ width: "50%" }}>
+                                <Button style={{ width: "35%"}} color="primary" onClick={str}>Save Changes</Button>
+                        <Navbar style={{ margin: "1%", width: "35%", height: "100%", padding: "0", display: "inline-block" }}>
 
-                    <Button style={{margin: "1%"}} color="primary" onClick={str}>Save Changes</Button>
-                    <Button style={{ margin: "1%" }} color="secondary" onClick={this.putDataHandler}>Discard Changes</Button>
+                            <NavItem tag={Link} to={'/myServer/admin/MovieTable'} style={{ width: "100%", height: "100%" }} >
+                                <Button style={{ width: "100%" }} color="secondary">Discard Changes</Button>
+                            </NavItem>
+                        </Navbar>
+                    </div>
+
+                    <div>
+                        Poster Images
+                    </div>
+                    <div>
+                        Background Images
+                    </div>
+                    <div>
+                        Carousel Images
+                    </div>
+
                 </form>
             </div >
         )

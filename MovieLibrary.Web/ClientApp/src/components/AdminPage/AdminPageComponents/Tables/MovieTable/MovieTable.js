@@ -4,7 +4,6 @@ import classes from '../../../AdminPageStyles/MovieTable.module.css';
 import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
 import Pagination from '../../Pagination/Pagination'
-import MovieInputForm from '../../Forms/MovieInputForm';
 import Modal from '../../Modals/Modal'
 import { Navbar, NavItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -22,31 +21,6 @@ class MovieTable extends Component {
                 orderDirection: true
             },
             totalNumberOfRecords: null,
-            inputFormVisibility: false,
-            newMovie: {
-                movieName: '',
-                movieLength: '',
-                language: '',
-                year: '',
-                shortDescription: '',
-                longDescription: '',
-                trivia: '',
-                movieGenres: []
-            },
-            editForm: {
-                formVisibility: false,
-                editMovie: {
-                    movieId: 2894,
-                    movieName: 'aaaa',
-                    movieLength: null,
-                    language: '',
-                    year: null,
-                    shortDescription: '',
-                    longDescription: '',
-                    trivia: '',
-                    movieGenres: []
-                }
-            },
             willBeDeleted: null,
             modalVisibility: false
         }
@@ -64,60 +38,9 @@ class MovieTable extends Component {
                 this.setState({ totalNumberOfRecords: response.data.totalRecords })
             },
             error => {
-                //When notification alerts are implemented(toast) trigger error toast.
                 console.log(error);
             }
         );
-    }
-
-    postDataHandler = () => {
-        var componentRef = this;
-        const data = { newMovie: this.state.newMovie };
-        axios.post('api/Movies', data.newMovie).then(function (response) {
-            console.log(response);
-            componentRef.setState({
-                newMovie: {
-                    movieName: '',
-                    movieLength: null,
-                    language: '',
-                    year: null,
-                    shortDescription: '',
-                    longDescription: '',
-                    trivia: '',
-                    movieGenres: []
-                }
-            })
-            componentRef.getData();
-        }).catch(function (error) {
-            console.log(error);
-        });
-    }
-
-    putDataHandler = () => {
-        var componentRef = this;
-        const data = { editMovie: this.state.editForm.editMovie };
-        axios.put('api/Movies/' + data.editMovie.movieId, data.editMovie).then(function (response) {
-            console.log(response);
-            componentRef.setState({
-                editForm: {
-                    formVisibility: false,
-                    editMovie: {
-                        movieId: null,
-                        movieName: '',
-                        movieLength: null,
-                        language: '',
-                        year: null,
-                        shortDescription: '',
-                        longDescription: '',
-                        trivia: '',
-                        movieGenres: [],
-                    }
-                }
-            });
-            componentRef.getData();
-        }).catch(function (error) {
-            console.log(error);
-        });
     }
 
     deleteDataHandler = (entityId) => {
@@ -161,15 +84,6 @@ class MovieTable extends Component {
         });
     }
 
-    hideEditModalHandler = () => {
-        this.setState(prevState => ({
-            editForm: {
-                ...prevState.editForm,
-                formVisibility: false
-            }
-        }))
-    }
-
     onChangeHandler = (event) => {
         var searchTerm = event.target.value;
         this.setState(prevState => ({
@@ -205,78 +119,11 @@ class MovieTable extends Component {
         });
     }
 
-    handleInputChange = (propertyName, event) => {
-        const movie = this.state.newMovie;
-        movie[propertyName] = event.target.value;
-        if (propertyName === 'year' || propertyName === 'movieLength') {
-            movie[propertyName] = parseInt(movie[propertyName])
-        }
-        this.setState({ newMovie: movie })
-    }
-
-    handleEditInputChange = (propertyName, event) => {
-        const movie = this.state.editForm.editMovie;
-        movie[propertyName] = event.target.value;
-        if (propertyName === 'year' || propertyName === 'movieLength') {
-            movie[propertyName] = parseInt(movie[propertyName])
-        }
-        this.setState(prevState => ({
-            editForm: {
-                ...prevState.editForm,
-                editMovie: movie
-            }
-        }))
-
-    }
-
     keyDownHandlerSearch = (event) => {
         if (event.key === 'Enter') {
             this.getData();
         }
     }
-
-    findIndex(id, list) {
-        var i;
-        for (i = 0; i < list.length; i++) {
-            if (list[i].genreId === id) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    checkboxInitialStateHandler = (id) => {
-        const data = this.state.editForm.editMovie.movieGenres;
-        const index = this.findIndex(id, data)
-        if (index > -1) {
-            this.setState(prevState => ({
-                editForm: {
-                    ...prevState.editForm,
-                    checked: true
-                }
-            }
-            ))
-        }
-    }
-
-
-    genreListHandler = (id) => {
-        const data = this.state.newMovie.movieGenres;
-        const index = this.findIndex(id, data)
-        if (index > -1) {
-            data.splice(index, 1)
-        }
-        else {
-            data.push({ genreId: id })
-            this.setState(prevState => ({
-                newMovie: {
-                    ...prevState.newMovie,
-                    movieGenres: data
-                }
-            }))
-        }
-    }
-
 
     render() {
         const movies = this.state.movies.map(movie => {
@@ -320,8 +167,8 @@ class MovieTable extends Component {
                                         placeholder={this.state.tableParameters.pageSize}
                                         value={this.state.tableParameters.pageSize}
                                         onChange={this.selectPageSizeHandler}
-                                        label="React Select"
-                                    >
+                                        label="React Select">
+
                                         <option value={25}>25</option>
                                         <option value={50}>50</option>
                                         <option value={75}>75</option>
@@ -354,11 +201,13 @@ class MovieTable extends Component {
                         {movies}
                         <tr>
                             <td colSpan={6} style={{ width: "100%", verticalAlign: "middle" }} >
-                                <Navbar style={{ padding: "0" }}>
-                                    <NavItem tag={Link} to={'/myServer/admin/MovieTableEdit/new'} className={classes.SidebarInnerContainer} >
-                                        <FaPlusCircle className={classes.FaPlusCircle}/>
-                                    </NavItem>
-                                </Navbar>
+                                <div style={{ float: "right", alignContent: "center" }}>
+                                    <Navbar >
+                                        <NavItem style={{ float: "right" }} tag={Link} to={'/myServer/admin/MovieTableEdit/new'} className={classes.SidebarInnerContainer} >
+                                            <FaPlusCircle className={classes.FaPlusCircle} />
+                                        </NavItem>
+                                    </Navbar>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -376,25 +225,6 @@ class MovieTable extends Component {
                         </tr>
                     </tbody>
                 </table>
-
-                <MovieInputForm
-                    formVisibility={this.state.inputFormVisibility}
-                    postDataHandler={this.postDataHandler}
-                    data={this.state.newMovie}
-                    clickedCancel={this.hideModalHandler}
-                    handleInputChange={this.handleInputChange}
-                    genreListHandler={this.genreListHandler}
-                />
-
-                <MovieInputForm
-                    formVisibility={this.state.editForm.formVisibility}
-                    postDataHandler={this.putDataHandler}
-                    data={this.state.editForm.editMovie}
-                    clickedCancel={this.hideEditModalHandler}
-                    handleInputChange={this.handleEditInputChange}
-                    genreListHandler={this.genreListHandler}
-                    checked={this.state.editForm.checked}
-                />
 
                 <Modal
                     modalVisibility={this.state.modalVisibility}

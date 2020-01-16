@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MovieLibrary.Model
 {
-    public class FileInfo
+    public class InfoData
     {
         public int FileInfoId { get; set; }
         public int FileDataId { get; set; }
@@ -10,7 +12,5 @@ namespace MovieLibrary.Model
         public string Extension { get; set; }
         public int? Size { get; set; }
 
-        public virtual FileData FileData { get; set; }
-        public virtual ICollection<MovieImage> MovieImages { get; set; }
     }
 }

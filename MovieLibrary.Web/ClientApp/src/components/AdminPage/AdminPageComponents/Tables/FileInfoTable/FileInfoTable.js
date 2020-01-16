@@ -24,7 +24,7 @@ class FileInfoTable extends Component {
             newFileInfo: {
                 fileDataId: null,
                 fileName: '',
-                fileExtension: null,
+                extension: null,
                 size: '',
             },
             editForm: {
@@ -32,7 +32,7 @@ class FileInfoTable extends Component {
                 editFileInfo: {
                     fileDataId: null,
                     fileName: '',
-                    fileExtension: null,
+                    extension: null,
                     size: '',
                 }
             },
@@ -82,7 +82,7 @@ class FileInfoTable extends Component {
                     editFileInfo: {
                         fileDataId: null,
                         fileName: '',
-                        fileExtension: null,
+                        extension: null,
                         size: '',
                     }
                 }
@@ -211,9 +211,9 @@ class FileInfoTable extends Component {
             return (
                 <tr key={fileInfo.fileInfoId}>
                     <td>{fileInfo.fileInfoId}</td>
-                    <td>{fileInfo.fileDataID} </td>
+                    <td>{fileInfo.fileDataId} </td>
                     <td>{fileInfo.fileName}</td>
-                    <td>{fileInfo.fileExtension}</td>
+                    <td>{fileInfo.extension}</td>
                     <td>{fileInfo.size}</td>
                     <td style={{ display: "flex" }}>
                         <FaEdit className={classes.FaEdit} onClick={() =>
@@ -271,7 +271,7 @@ class FileInfoTable extends Component {
                             <th>Id <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'FileInfoId' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'FileInfoId' })} /></th>
                             <th>FileDataId <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'FileDataId' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'FileDataId' })} /></th>
                             <th>FileName <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'FileName' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'FileName' })} /></th>
-                            <th>FileExtension <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'FileExtension' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'FileExtension' })} /></th>
+                            <th>FileExtension <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'Extension' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'Extension' })} /></th>
                             <th>Size <TiArrowSortedDown onClick={() => this.orderByPropDescending({ Id: 'Size' })} className={classes.TiArrowSortedDown} /> <TiArrowSortedUp className={classes.TiArrowSortedUp} onClick={() => this.orderByPropAscending({ Id: 'Size' })} /></th>
                             <th />
                         </tr>

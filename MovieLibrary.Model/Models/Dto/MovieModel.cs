@@ -27,6 +27,19 @@ namespace MovieLibrary.Model
             {
                 Genres = entity.MovieGenres.Select(x => x.GenreId).ToList();
             }
+
+            if (entity.MovieImages != null)
+            {
+                Images = entity.MovieImages.Select(x => new Image
+                {
+                    Data = x.FileInfo.FileData.Data,
+                    Extension = x.FileInfo.Extension,
+                    FileInfoId = x.FileInfoId,
+                    Size = x.FileInfo.Size,
+                    FileName = x.FileInfo.FileName,
+                    ImageTypeId = x.ImageTypeId
+                }).ToList();
+            }
         }
 
         public int? MovieId { get; set; }
@@ -38,6 +51,7 @@ namespace MovieLibrary.Model
         public string LongDescription { get; set; }
         public string Trivia { get; set; }
         public List<int> Genres { get; set; }
+        public List<Image> Images { get; set; }
 
         public Movie ToEntity()
         {

@@ -1,4 +1,6 @@
-﻿namespace MovieLibrary.Model
+﻿using System.Collections.Generic;
+
+namespace MovieLibrary.Model
 {
     public class MovieImage
     {
@@ -8,6 +10,6 @@
 
         public virtual Movie Movie { get; set; }
         public virtual FileInfo FileInfo { get; set; }
-        public virtual ImageType ImageClassification { get; set; }
+        public virtual ImageType ImageType { get; set; }
     }
 }

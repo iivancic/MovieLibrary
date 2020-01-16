@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieLibrary.Model;
+using System.Linq;
 
 namespace MovieLibrary.Service
 {
@@ -11,7 +12,7 @@ namespace MovieLibrary.Service
         public DbSet<FileData> FileData { get; set; }
         public DbSet<FileInfo> FileInfo { get; set; }
         public DbSet<ImageType> ImageType { get; set; }
-        public DbSet<MovieImage> MovieImages { get; set; }
+        public DbSet<MovieImage> MovieImage { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -26,11 +27,11 @@ namespace MovieLibrary.Service
             modelBuilder.Entity<FileData>()
                 .HasKey(bc => new { bc.FileDataId });
 
-            modelBuilder.Entity<FileInfo>()
-                .HasOne(bc => bc.FileData)
-                .WithMany(bc => bc.FileInfo)
-                .HasForeignKey(bc => bc.FileDataId);
-
+            modelBuilder.Entity<FileData>()
+                .HasOne(bc => bc.FileInfo)
+                .WithOne(bc => bc.FileData)
+                .HasForeignKey<FileInfo>(bc => bc.FileDataId);
+           
             modelBuilder.Entity<FileInfo>()
             .HasKey(bc => new { bc.FileInfoId });
 
@@ -49,7 +50,11 @@ namespace MovieLibrary.Service
                  .WithMany(bc => bc.MovieImages)
                  .HasForeignKey(bc => bc.FileInfoId);
             modelBuilder.Entity<MovieImage>()
-                .HasOne(bc => bc.ImageClassification)
+                .HasOne(bc => bc.ImageType)
+                .WithMany(bc => bc.MovieImages)
+                .HasForeignKey(bc => bc.ImageTypeId);
+            modelBuilder.Entity<MovieImage>()
+                .HasOne(bc => bc.ImageType)
                 .WithMany(bc => bc.MovieImages)
                 .HasForeignKey(bc => bc.ImageTypeId);
 

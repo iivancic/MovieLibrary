@@ -34,8 +34,8 @@ export default ({ postDataHandler, data, formVisibility, clickedCancel, handleIn
                             type="text"
                             className="form-control"
                             placeholder="Enter File Extension"
-                            defaultValue={data.fileExtension}
-                            onChange={handleInputChange.bind(this, 'fileExtension')} />
+                            defaultValue={data.Extension}
+                            onChange={handleInputChange.bind(this, 'Extension')} />
 
                         <label>Size: </label>
                         <input

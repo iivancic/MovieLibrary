@@ -24,7 +24,6 @@ namespace MovieLibrary.Service
         public async Task<PageTableResult<MovieModel>> GetTableAsync(TableParameters tableParameters)
         {
             var query = _context.Movie.AsQueryable();
-            query = query.Include(x => x.MovieGenres);
 
             if (!string.IsNullOrWhiteSpace(tableParameters.SearchTerm))
             {
@@ -73,6 +72,9 @@ namespace MovieLibrary.Service
             var movie = await _context.Movie
                 .Where(x => x.MovieId == id)
                 .Include(x => x.MovieGenres)
+                .Include(x => x.MovieImages)
+                    .ThenInclude(x => x.FileInfo)
+                    .ThenInclude(x => x.FileData)
                 .Select(x => new MovieModel(x))
                 .FirstOrDefaultAsync();
 
