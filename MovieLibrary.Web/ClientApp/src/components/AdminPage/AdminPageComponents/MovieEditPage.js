@@ -10,6 +10,7 @@ class MovieEditPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            imageSrc:'',
             newMovie: {
                 movieId: null,
                 movieName: '',
@@ -41,6 +42,7 @@ class MovieEditPage extends Component {
                 }
             );
         }
+
     }
 
     postDataHandler = () => {
@@ -173,6 +175,7 @@ class MovieEditPage extends Component {
         var listGenres = this.state.newMovie.genres;
         return (
             <div style={{ margin: "3%" }}>
+                <img src={this.state.imageSrc}/>
                 <form>
                     <label >Name:</label>
                     <input
@@ -247,17 +250,6 @@ class MovieEditPage extends Component {
                             </NavItem>
                         </Navbar>
                     </div>
-
-                    <div>
-                        Poster Images
-                    </div>
-                    <div>
-                        Background Images
-                    </div>
-                    <div>
-                        Carousel Images
-                    </div>
-
                 </form>
             </div >
         )

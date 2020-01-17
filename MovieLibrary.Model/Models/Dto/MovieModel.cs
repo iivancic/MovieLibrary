@@ -23,6 +23,7 @@ namespace MovieLibrary.Model
             LongDescription = entity.LongDescription;
             Trivia = entity.Trivia;
 
+
             if (entity.MovieGenres != null)
             {
                 Genres = entity.MovieGenres.Select(x => x.GenreId).ToList();
@@ -32,7 +33,7 @@ namespace MovieLibrary.Model
             {
                 Images = entity.MovieImages.Select(x => new Image
                 {
-                    Data = x.FileInfo.FileData.Data,
+                    FileDataId = x.FileInfo.FileData.FileDataId,
                     Extension = x.FileInfo.Extension,
                     FileInfoId = x.FileInfoId,
                     Size = x.FileInfo.Size,

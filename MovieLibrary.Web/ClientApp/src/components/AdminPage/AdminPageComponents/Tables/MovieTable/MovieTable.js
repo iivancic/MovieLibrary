@@ -32,6 +32,13 @@ class MovieTable extends Component {
     }
 
     getData = () => {
+        //var data = {
+        //    source: 'C:\\Users\\irena\\Documents\\MovieLibrary\\MovieLibrary.Web\\ClientApp\\src\\Assets\\Images\\DieHard\\DieHardPoster.jpg' 
+        //}
+        //axios.post('source', data).then(function (response) {
+        //    console.log(response);
+        //})
+
         axios.get('api/Movies', { params: this.state.tableParameters }).then(
             response => {
                 this.setState({ movies: response.data.items });

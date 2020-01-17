@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieLibrary.Model;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,10 +17,25 @@ namespace MovieLibrary.Service
             _context = new MovieLibraryContext();
         }
 
-        public Task<List<FileData>> QueryAll()
+        public async Task<byte[]> GetAsync(int id)
         {
-            return _context.FileData.ToListAsync();
+            var image = await _context.FileData
+                .Where(x => x.FileDataId == id)
+                .Select(x => x.Data).FirstOrDefaultAsync();
+
+            return image;
         }
- 
+
+        public async Task<bool> InsertAsync(string path)
+        {
+            var imageArray = File.ReadAllBytes(path);
+            var fileData = new FileData
+            {
+                Data = imageArray
+            };
+            await _context.AddAsync(fileData);
+            var affectedRows = await _context.SaveChangesAsync();
+            return affectedRows > 0;
+        }
     }
 }

@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.IO;
-using MovieLibrary.Service;
 using MovieLibrary.Model;
+using MovieLibrary.Service;
+using System;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
-namespace MovieLibrary.Web
+namespace MovieLibrary.Controllers
 {
-    [Route("file")]
-    public class FileDataController : Controller
+    [Route("api/[controller]")]
+    public class FileDataController : BaseController
     {
         private readonly FileDataService _service;
 
@@ -19,30 +18,28 @@ namespace MovieLibrary.Web
             _service = new FileDataService();
         }
 
-        [HttpGet, Route("download/{fileId}")]
-        public IActionResult Download(int fileid)
+        [HttpGet, Route("getImage/{fileId}")]
+        public async Task<IActionResult> GetImageAsync(int fileId)
         {
-            var imagePath = @"c:\users\irena\documents\movielibrary\movielibrarydatabase\movielibrarydatabase\images\diehardposter.jpg";
-            var imageBytes = System.IO.File.ReadAllBytes(imagePath);
-
-            return File(imageBytes, "image/jpeg", Path.GetFileName(imagePath));
+            var result = await _service.GetAsync(fileId);
+            return File(result, "image/png");
         }
 
-  
-        /*[HttpPost, Route("")]
-        public void newGenre([FromBody] string value)
+        [HttpPost, Route("source")]
+        public async Task<IActionResult> PostAsync([FromBody] FilePathParams parameters)
         {
-            using var context = new MovieLibraryContext();
+            if (parameters == null || String.IsNullOrWhiteSpace(parameters.Source))
+                return BadRequest("Source must be specified!");
 
-            var genre = new Genre
-            {
-                GenreName = value
-            };
-
-            context.Genres.Add(genre);
-            context.SaveChanges();
-
+            var insertResult = await _service.InsertAsync(parameters.Source);
+            if (!insertResult)
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to insert entity.");
+            return Ok();
         }
-        */
+
+        public class FilePathParams
+        {
+            public string Source { get; set; }
+        }
     }
 }
