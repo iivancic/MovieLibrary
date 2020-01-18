@@ -4,13 +4,15 @@ import MovieGenreLink from '../AdminPageComponents/Tables/MovieGenreLink/MovieGe
 import { Button } from 'reactstrap';
 import { Navbar, NavItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import MovieImages from '../../AdminPage/AdminPageComponents/MovieImages/MovieImages'
+
 
 class MovieEditPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            imageSrc:'',
+            imageSrc: '',
             newMovie: {
                 movieId: null,
                 movieName: '',
@@ -42,7 +44,6 @@ class MovieEditPage extends Component {
                 }
             );
         }
-
     }
 
     postDataHandler = () => {
@@ -171,11 +172,11 @@ class MovieEditPage extends Component {
         } else {
             str = this.putDataHandler
         }
-
+        var listImages = this.state.newMovie.images;
         var listGenres = this.state.newMovie.genres;
         return (
             <div style={{ margin: "3%" }}>
-                <img src={this.state.imageSrc}/>
+                <img src={this.state.imageSrc} />
                 <form>
                     <label >Name:</label>
                     <input
@@ -241,10 +242,10 @@ class MovieEditPage extends Component {
                         defaultValue={data.trivia}
                         onChange={this.handleInputChange.bind(this, 'trivia')} />
                     <MovieGenreLink genreList={listGenres} genreListHandler={this.genreListHandler} />
+                    <MovieImages images={listImages} />
                     <div style={{ width: "50%" }}>
-                                <Button style={{ width: "35%"}} color="primary" onClick={str}>Save Changes</Button>
+                        <Button style={{ width: "35%" }} color="primary" onClick={str}>Save Changes</Button>
                         <Navbar style={{ margin: "1%", width: "35%", height: "100%", padding: "0", display: "inline-block" }}>
-
                             <NavItem tag={Link} to={'/myServer/admin/MovieTable'} style={{ width: "100%", height: "100%" }} >
                                 <Button style={{ width: "100%" }} color="secondary">Discard Changes</Button>
                             </NavItem>

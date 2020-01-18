@@ -4,7 +4,7 @@ import ImageUploader from 'react-images-upload';
 
 export default ({ postDataHandler, formVisibility, clickedCancel, handleInputChange }) => {
     return (
-        <Modal isOpen={true} >
+        <Modal isOpen={formVisibility} >
             <ModalHeader >Add new image</ModalHeader>
             <ModalBody>
                 <form>
@@ -18,16 +18,16 @@ export default ({ postDataHandler, formVisibility, clickedCancel, handleInputCha
                         />
                         <label>Select image type: </label>
                         <select style={{ margin: '2%' }}>
-                            <option value={25}> Front Image </option>
-                            <option value={30}> Background Image </option>
-                            <option value={30}> Carousel Images </option>
+                            <option value={2}> Front Image </option>
+                            <option value={1}> Background Image </option>
+                            <option value={3}> Carousel Images </option>
                         </select>
                     </div>
                 </form>
             </ModalBody>
             <ModalFooter>
-                <Button color="primary"> Submit</Button>
-                <Button color="secondary">Cancel</Button>
+                <Button color="primary" onClick={handleInputChange}> Submit</Button>
+                <Button color="secondary" onClick={clickedCancel}>Cancel</Button>
             </ModalFooter>
         </Modal>
 

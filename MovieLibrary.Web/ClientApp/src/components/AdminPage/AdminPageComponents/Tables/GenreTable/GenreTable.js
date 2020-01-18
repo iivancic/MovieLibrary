@@ -51,7 +51,6 @@ class GenreTable extends Component {
                 this.setState({ totalNumberOfRecords: response.data.totalRecords })
             },
             error => {
-                //When notification alerts are implemented(toast) trigger error toast.
                 console.log(error);
             }
         );
@@ -345,6 +344,8 @@ class GenreTable extends Component {
                     editName={this.state.editForm.editName}
                     handleInputChange={this.editChangeHandler}
                 />
+
+              
             </div >
 
         )
