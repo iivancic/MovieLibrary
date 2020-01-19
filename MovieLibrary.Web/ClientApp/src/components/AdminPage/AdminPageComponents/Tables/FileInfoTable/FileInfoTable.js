@@ -1,11 +1,11 @@
 ﻿import React, { Component } from 'react';
-import axios from '../../../../../axios-orders';
 import classes from '../../../AdminPageStyles/MovieTable.module.css';
 import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
-import Pagination from '../../Pagination/Pagination'
+import Pagination from '../../Pagination/Pagination';
 import FileInfoInputForm from '../../Forms/FileInfoInputForm';
-import Modal from '../../Modals/Modal'
+import Modal from '../../Modals/Modal';
+import fileInfoApi from '../../../../../api/fileInfoApi';
 
 class FileInfoTable extends Component {
     constructor(props) {
@@ -46,13 +46,12 @@ class FileInfoTable extends Component {
     }
 
     getData = () => {
-        axios.get('api/FileInfo', { params: this.state.tableParameters }).then(
+        fileInfoApi.getList(this.state.tableParameters).then(
             response => {
                 this.setState({ fileInfo: response.data.items });
                 this.setState({ totalNumberOfRecords: response.data.totalRecords })
             },
             error => {
-                //When notification alerts are implemented(toast) trigger error toast.
                 console.log(error);
             }
         );
@@ -60,8 +59,8 @@ class FileInfoTable extends Component {
 
     postDataHandler = () => {
         var componentRef = this;
-        const data = { newFileInfo: this.state.newFileInfo };
-        axios.post('api/FileInfo', data.newFileInfo).then(function (response) {
+        const data = this.state.newFileInfo;
+        fileInfoApi.addEntity(data).then(function (response) {
             console.log(response);
             componentRef.setState({ newFileInfo: null })
             componentRef.getData();
@@ -72,9 +71,8 @@ class FileInfoTable extends Component {
 
     putDataHandler = () => {
         var componentRef = this;
-        const data = { editFileInfo: this.state.editForm.editFileInfo };
-
-        axios.put('api/FileInfo/' + data.editFileInfo.fileInfoId, data.editFileInfo).then(function (response) {
+        const data = this.state.editForm.editFileInfo;
+        fileInfoApi.changeEntity(data.fileDataId, data).then(function (response) {
             console.log(response);
             componentRef.setState({
                 editForm: {
@@ -95,14 +93,12 @@ class FileInfoTable extends Component {
 
     deleteDataHandler = (entityId) => {
         var componentRef = this;
-
-        axios.delete('api/FileInfo/' + entityId).then(function (response) {
+        fileInfoApi.deleteEntity(entityId).then(function (response) {
             console.log(response);
             componentRef.getData();
         }).catch(function (error) {
             console.log(error);
         });
-
         this.hideModalHandler();
     }
 

@@ -2,7 +2,6 @@
 import Pagination from "react-js-pagination"
 import classes from "../../AdminPageStyles/Pagination.module.css"
 
-
 export default ({ currentPage, totalNumberOfItems, itemsPerPage, onClickHandler }) => {
     return (
         <div className={classes.Pagination}>

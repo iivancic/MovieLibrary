@@ -2,7 +2,6 @@
 import GenreTable from '../AdminPageComponents/Tables/GenreTable/GenreTable';
 import MovieTable from '../AdminPageComponents/Tables/MovieTable/MovieTable';
 import FileInfoTable from '../AdminPageComponents/Tables/FileInfoTable/FileInfoTable';
-import FileDataTable from '../AdminPageComponents/Tables/FileDataTable/FileDataTable';
 import Sidebar from '../AdminPageComponents/Sidebar/Sidebar';
 import MovieEditPage from '../AdminPageComponents/MovieEditPage';
 import { Row, Col } from 'react-bootstrap';
@@ -22,7 +21,6 @@ class AdminLayout extends Component {
                         <Route path='/myServer/admin/GenreTable' component={GenreTable} />
                         <Route path='/myServer/admin/MovieTable' component={MovieTable} />
                         <Route path='/myServer/admin/FileInfo' component={FileInfoTable} />
-                        <Route path='/myServer/admin/FileDataTable' component={FileDataTable} />
                         <Route path='/myServer/admin/MovieTableEdit/' component={MovieEditPage} />
                     </Col>
                 </Row>

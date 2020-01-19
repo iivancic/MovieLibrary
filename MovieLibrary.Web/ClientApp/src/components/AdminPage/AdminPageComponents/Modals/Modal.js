@@ -13,7 +13,7 @@ export default ({ modalVisibility, className, clickedCancel, clickedContinue, ke
                 Are you sure you want to delete this item?
              </ModalBody>
             <ModalFooter>
-                <Button color="primary" onKeyDown={keyDownHandlerDelete}  onClick={clickedContinue}>Continue</Button>
+                <Button color="primary" onKeyDown={keyDownHandlerDelete} onClick={clickedContinue}>Continue</Button>
                 <Button color="secondary" onClick={clickedCancel}>Cancel</Button>
             </ModalFooter>
         </Modal>
