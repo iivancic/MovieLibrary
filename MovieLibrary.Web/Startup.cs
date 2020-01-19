@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MovieLibrary.Service;
 
 namespace MovieLibrary { 
     public class Startup
@@ -27,6 +28,12 @@ namespace MovieLibrary {
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddScoped<MovieLibraryContext>();
+            services.AddScoped<GenreService>();
+            services.AddScoped<MovieService>();
+            services.AddScoped<FileDataService>();
+            services.AddScoped<FileInfoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

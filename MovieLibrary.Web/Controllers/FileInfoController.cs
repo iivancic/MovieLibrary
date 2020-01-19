@@ -11,9 +11,9 @@ namespace MovieLibrary.Controllers
     {
         private readonly FileInfoService _service;
 
-        public FileInfoController()
+        public FileInfoController(FileInfoService service)
         {
-            _service = new FileInfoService();
+            _service = service;
         }
 
         // GET: api/FileInfo

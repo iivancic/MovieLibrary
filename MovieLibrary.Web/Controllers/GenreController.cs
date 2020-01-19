@@ -12,9 +12,9 @@ namespace MovieLibrary.Controllers
     {
         private readonly GenreService _service;
 
-        public GenreController()
+        public GenreController(GenreService service)
         {
-            _service = new GenreService();
+            _service = service;
         }
 
         [HttpGet("all")]

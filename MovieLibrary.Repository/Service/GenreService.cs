@@ -10,9 +10,9 @@ namespace MovieLibrary.Service
     {
         private readonly MovieLibraryContext _context;
 
-        public GenreService()
+        public GenreService(MovieLibraryContext context)
         {
-            _context = new MovieLibraryContext();
+            _context = context;
         }
 
         public Task<List<Genre>> QueryAll()

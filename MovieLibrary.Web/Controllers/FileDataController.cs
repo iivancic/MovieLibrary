@@ -13,9 +13,9 @@ namespace MovieLibrary.Controllers
     {
         private readonly FileDataService _service;
 
-        public FileDataController()
+        public FileDataController(FileDataService service)
         {
-            _service = new FileDataService();
+            _service = service;
         }
 
         [HttpGet, Route("getImage/{fileId}")]

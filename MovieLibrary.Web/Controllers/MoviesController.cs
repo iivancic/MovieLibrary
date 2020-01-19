@@ -11,9 +11,9 @@ namespace MovieLibrary.Controllers
     {
         private readonly MovieService _service;
 
-        public MoviesController()
+        public MoviesController(MovieService service)
         {
-            _service = new MovieService();
+            _service = service ;
         }
 
         // GET: api/Movies

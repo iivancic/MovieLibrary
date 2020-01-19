@@ -12,9 +12,9 @@ namespace MovieLibrary.Service
     {
         private readonly MovieLibraryContext _context;
 
-        public FileDataService()
+        public FileDataService(MovieLibraryContext context)
         {
-            _context = new MovieLibraryContext();
+            _context = context;
         }
 
         public async Task<byte[]> GetAsync(int id)
