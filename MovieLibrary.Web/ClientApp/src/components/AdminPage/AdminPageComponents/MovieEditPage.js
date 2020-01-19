@@ -1,11 +1,10 @@
 ﻿import React, { Component } from 'react';
-import axios from '../../../axios-orders';
+import axios from '../../../api/baseApi';
 import MovieGenreLink from '../AdminPageComponents/Tables/MovieGenreLink/MovieGenreLink';
-import { Button } from 'reactstrap';
-import { Navbar, NavItem } from 'reactstrap';
+import { Button, Navbar, NavItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import MovieImages from '../../AdminPage/AdminPageComponents/MovieImages/MovieImages'
-
+import movieApi from '../../../api/movieApi';
 
 class MovieEditPage extends Component {
 
@@ -33,13 +32,13 @@ class MovieEditPage extends Component {
     }
 
     getData = () => {
-        if (window.location.pathname.split('/').pop() !== "new") {
-            axios.get('api/Movies/' + window.location.pathname.split('/').pop()).then(
+        const id = window.location.pathname.split('/').pop();
+        if (id !== "new") {
+            movieApi.getById(id).then(
                 response => {
                     this.setState({ newMovie: response.data });
                 },
                 error => {
-                    //When notification alerts are implemented(toast) trigger error toast.
                     console.log(error);
                 }
             );
@@ -48,8 +47,8 @@ class MovieEditPage extends Component {
 
     postDataHandler = () => {
         var componentRef = this;
-        const data = { newMovie: this.state.newMovie };
-        axios.post('api/Movies', data.newMovie).then(function (response) {
+        const data = this.state.newMovie;
+        movieApi.addEntity(data).then(function (response) {
             console.log(response);
             componentRef.setState({
                 newMovie: {
@@ -60,7 +59,8 @@ class MovieEditPage extends Component {
                     shortDescription: '',
                     longDescription: '',
                     trivia: '',
-                    genres: []
+                    genres: [],
+                    images: []
                 }
             })
             componentRef.getData();
@@ -72,7 +72,7 @@ class MovieEditPage extends Component {
     putDataHandler = () => {
         var componentRef = this;
         const data = this.state.newMovie;
-        axios.put('api/Movies/' + data.movieId, data).then(function (response) {
+        movieApi.changeEntity(data.movieId, data).then(function (response) {
             console.log(response);
             componentRef.setState({
                 editForm: {

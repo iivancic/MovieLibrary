@@ -1,8 +1,8 @@
 ﻿import React, { Component } from 'react';
-import axios from '../../../../axios-orders'
 import { FaPlusCircle } from 'react-icons/fa';
 import ImagesInputForm from '../Forms/ImagesInputForm'
 import classes from '../../../AdminPage/AdminPageStyles/MovieTable.module.css'
+import fileApi from '../../../../api/fileApi'
 
 class MovieImages extends Component {
     constructor(props) {
@@ -34,17 +34,17 @@ class MovieImages extends Component {
 
         const posterImages = posterImagesInfo.map(image => {
             return (
-                <img alt='' style={{ padding: "1%", float: "left", maxHeight: "100%" }} src={'http://localhost:55385/api/FileData/getImage/' + image.fileDataId} key={image.fileDataId} />
+                <img alt='' style={{ padding: "1%", float: "left", maxHeight: "100%" }} src={fileApi.imageRoute(image.fileDataId)} key={image.fileDataId} />
             )
         });
         const backgroundImages = backgroundImagesInfo.map(image => {
             return (
-                <img alt='' style={{ padding: "1%", float: "left", maxHeight: "100%" }} src={'http://localhost:55385/api/FileData/getImage/' + image.fileDataId} key={image.fileDataId} />
+                <img alt='' style={{ padding: "1%", float: "left", maxHeight: "100%" }} src={fileApi.imageRoute(image.fileDataId)} key={image.fileDataId} />
             )
         });
         const carouselImages = carouselImagesInfo.map(image => {
             return (
-                <img alt='' style={{ padding: "1%", float: "left", maxHeight: "100%" }} src={'http://localhost:55385/api/FileData/getImage/' + image.fileDataId} key={image.fileDataId} />
+                <img alt='' style={{ padding: "1%", float: "left", maxHeight: "100%" }} src={fileApi.imageRoute(image.fileDataId)} key={image.fileDataId} />
             )
         });
 

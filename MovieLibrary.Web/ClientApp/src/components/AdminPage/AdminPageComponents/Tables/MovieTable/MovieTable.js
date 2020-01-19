@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import axios from '../../../../../axios-orders';
+import axios from '../../../../../api/baseApi';
 import classes from '../../../AdminPageStyles/MovieTable.module.css';
 import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
@@ -7,6 +7,7 @@ import Pagination from '../../Pagination/Pagination'
 import Modal from '../../Modals/Modal'
 import { Navbar, NavItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import movieApi from '../../../../../api/movieApi'
 
 class MovieTable extends Component {
     constructor(props) {
@@ -32,14 +33,7 @@ class MovieTable extends Component {
     }
 
     getData = () => {
-        //var data = {
-        //    source: 'C:\\Users\\irena\\Documents\\MovieLibrary\\MovieLibrary.Web\\ClientApp\\src\\Assets\\Images\\DieHard\\DieHardPoster.jpg' 
-        //}
-        //axios.post('source', data).then(function (response) {
-        //    console.log(response);
-        //})
-
-        axios.get('api/Movies', { params: this.state.tableParameters }).then(
+        movieApi.getList(this.state.tableParameters).then(
             response => {
                 this.setState({ movies: response.data.items });
                 this.setState({ totalNumberOfRecords: response.data.totalRecords })
@@ -52,8 +46,7 @@ class MovieTable extends Component {
 
     deleteDataHandler = (entityId) => {
         var componentRef = this;
-
-        axios.delete('api/Movies/' + entityId).then(function (response) {
+        movieApi.deleteEntity(entityId).then(function (response) {
             console.log(response);
             componentRef.getData();
         }).catch(function (error) {

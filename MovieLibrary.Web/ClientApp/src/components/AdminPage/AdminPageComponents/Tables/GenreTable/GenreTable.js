@@ -1,12 +1,12 @@
 ﻿import React, { Component } from 'react';
-import axios from '../../../../../axios-orders';
 import classes from '../../../AdminPageStyles/GenreTable.module.css';
 import GenreModal from '../../Modals/Modal';
 import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from "react-icons/fa";
 import GenreInputForm from '../../Forms/GenreInputForm';
 import GenreEditForm from '../../Forms/GenreEditForm';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
-import Pagination from '../../Pagination/Pagination'
+import Pagination from '../../Pagination/Pagination';
+import genreApi from '../../../../../api/genreApi';
 
 class GenreTable extends Component {
     constructor(props) {
@@ -45,7 +45,7 @@ class GenreTable extends Component {
     }
 
     getData = () => {
-        axios.get('api/genre', { params: this.state.tableParameters }).then(
+        genreApi.getList(this.state.tableParameters).then(
             response => {
                 this.setState({ genres: response.data.items });
                 this.setState({ totalNumberOfRecords: response.data.totalRecords })
@@ -58,14 +58,12 @@ class GenreTable extends Component {
 
     deleteDataHandler = (entityId) => {
         var componentRef = this;
-
-        axios.delete('api/genre/' + entityId).then(function (response) {
+        genreApi.deleteEntity(entityId).then(function (response) {
             console.log(response);
             componentRef.getData();
         }).catch(function (error) {
             console.log(error);
         });
-
         this.hideModalHandler();
     }
 
@@ -80,7 +78,7 @@ class GenreTable extends Component {
     postDataHandler = () => {
         var componentRef = this;
         const data = { genreName: this.state.newGenre.genreName };
-        axios.post('api/genre', data).then(function (response) {
+        genreApi.addEntity(data).then(function (response) {
             console.log(response);
             componentRef.setState({ newGenre: { genreName: '' } })
             componentRef.getData();
@@ -92,8 +90,7 @@ class GenreTable extends Component {
     saveChangesHandler = () => {
         var componentRef = this;
         const data = { genreId: this.state.editForm.editId, genreName: this.state.editForm.editName };
-
-        axios.put('api/genre/' + data.genreId, data).then(function (response) {
+        genreApi.changeEntity(data.genreId, data).then(function (response) {
             console.log(response);
             componentRef.setState({
                 editForm: {
@@ -159,7 +156,6 @@ class GenreTable extends Component {
         });
     }
 
-
     orderByIdDescending = () => {
         this.setState(prevState => ({
             tableParameters: {
@@ -171,6 +167,7 @@ class GenreTable extends Component {
             this.getData();
         });
     }
+
     orderByIdAscending = () => {
         this.setState(prevState => ({
             tableParameters: {
@@ -182,6 +179,7 @@ class GenreTable extends Component {
             this.getData();
         });
     }
+
     orderByNameDescending = () => {
         this.setState(prevState => ({
             tableParameters: {
@@ -193,6 +191,7 @@ class GenreTable extends Component {
             this.getData();
         });
     }
+
     orderByNameAscending = () => {
         this.setState(prevState => ({
             tableParameters: {
@@ -204,6 +203,7 @@ class GenreTable extends Component {
             this.getData();
         });
     }
+
     pageChangeHandler = (pageNumber) => {
         this.setState(prevState => ({
             tableParameters: {
@@ -219,7 +219,6 @@ class GenreTable extends Component {
         if (event.key === 'Enter') {
             this.getData();
         }
-            
     }
 
     keyDownInputHandler = (event) => {
@@ -227,7 +226,6 @@ class GenreTable extends Component {
             this.postDataHandler();
         }
     }
-
 
     render() {
         const genres = this.state.genres.map(genre => {

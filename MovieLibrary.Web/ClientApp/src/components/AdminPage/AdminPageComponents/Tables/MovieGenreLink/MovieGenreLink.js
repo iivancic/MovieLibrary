@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
-import axios from '../../../../../axios-orders';
 import { Row, Col } from 'react-bootstrap';
+import genreApi from '../../../../../api/genreApi';
 
 class MovieGenreLink extends Component {
     constructor(props) {
@@ -16,19 +16,17 @@ class MovieGenreLink extends Component {
     }
 
     getData = () => {
-        axios.get('api/genre/all').then(
+        genreApi.getAll().then(
             response => {
                 this.setState({ genres: response.data});
             },
             error => {
-                //When notification alerts are implemented(toast) trigger error toast.
                 console.log(error);
             }
         );
     };
 
     render() {
-
         function containsGenre(list, object) {
             for (var i = 0; i < list.length; i++) {
                 if (list[i] === object.genreId) {
